@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fater.wds.dao.HomeDao">
+		<resultMap type="com.fater.wds.entity.Home"
+		id="homeMap">
+		<id column="home_id" property="homeId" />
+		<result column="home_purchase_date" property="homePurchaseDate" />
+		<result column="home_purchase_value" property="homePurchaseValue" />
+		<result column="home_area" property="homeArea" />
+		<result column="auto_fire_notification" property="autoFireNotification" />
+		<result column="home_security_system" property="homeSecuritySystem" />
+		<result column="swimming_pool" property="swimmingPool" />
+		<result column="basement" property="basement" />
+		<result column="customer_id" property="customerId" />
+	</resultMap>
+	<insert id="insertHome" useGeneratedKeys="true"
+		keyColumn="home_id" keyProperty="homeId">
+		INSERT INTO
+		home(home_purchase_date,home_purchase_value,home_area,home_type,auto_fire_notification,home_security_system,swimming_pool,basement,customer_id)
+		VALUES
+		(#{homePurchaseDate},#{homePurchaseValue},#{homeArea},#{homeType},#{autoFireNotification},#{homeSecuritySystem},#{swimmingPool},#{basement},#{customerId});
+	</insert>
+	
+	<select id="queryHomeListByCustomerId" resultMap="homeMap" parameterType="Long">
+		select
+		h.home_id,
+		h.home_purchase_date,
+		h.home_purchase_value,
+		h.home_area,
+		h.home_type,
+		h.auto_fire_notification,
+		h.home_security_system,
+		h.swimming_pool,
+		h.basement
+		from 
+			home h
+		where
+			h.customer_id = #{customerId};
+	</select>
+	
+	<select id="queryHomeListByPolicyId" resultMap="homeMap" parameterType="Long">
+		select
+		h.home_id,
+		h.home_purchase_date,
+		h.home_purchase_value,
+		h.home_area,
+		h.home_type,
+		h.auto_fire_notification,
+		h.home_security_system,
+		h.swimming_pool,
+		h.basement
+		from
+		home h left join home_policy hp on h.home_id = hp.home_id where hp.policy_id=#{policyId};
+	</select>
+	
+	<select id="queryByHomeId" resultType = "com.fater.wds.entity.Home" parameterType = "Long">
+		select
+		h.home_id,
+		h.home_purchase_date,
+		h.home_purchase_value,
+		h.home_area,
+		h.home_type,
+		h.auto_fire_notification,
+		h.home_security_system,
+		h.swimming_pool,
+		h.basement
+		from 
+			home h
+		where 
+			h.home_id = #{homeId};
+	</select>
+	
+	<update id="updateHome" parameterType="com.fater.wds.entity.Home">
+		update home
+		<set>
+			<if test="homePurchaseDate!=null">home_purchase_date=#{homePurchaseDate},</if>
+			<if test="homePurchaseValue!=null">home_purchase_value=#{homePurchaseValue},</if>
+			<if test="homeArea!=null">home_area=#{homeArea},</if>
+			<if test="homeType!=null">home_type=#{homeType},</if>
+			<if test="autoFireNotification!=null">auto_fire_notification=#{autoFireNotification},</if>
+			<if test="homeSecuritySystem!=null">home_security_system=#{homeSecuritySystem},</if>
+			<if test="swimmingPool!=null">swimming_pool=#{swimmingPool},</if>
+			<if test="basement!=null">basement=#{basement}</if>
+		</set>
+		where home_id=#{homeId};
+	</update>
+</mapper>

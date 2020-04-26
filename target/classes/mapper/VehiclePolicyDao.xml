@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fater.wds.dao.VehiclePolicyDao">
+	<insert id="insertVehiclePolicy">
+		INSERT INTO
+		vehicle_policy(vehicle_id,policy_id)
+		VALUES
+		(#{vehicleId},#{policyId})
+	</insert>
+</mapper>

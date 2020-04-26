@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Policy Registration for WDS</title>
+    <meta name="description" content="MSUI: Build mobile apps with simple HTML, CSS, and JS components.">
+    <meta name="author" content="阿里巴巴国际UED前端">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Google Web Fonts -->
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+
+    <link rel="apple-touch-icon-precomposed" href="/assets/img/apple-touch-icon-114x114.png">
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+    <script>
+      //ga
+    </script>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?ba76f8230db5f616edc89ce066670710";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+
+
+function typeClk()
+{
+	 var obj = document.getElementById("type");
+	 var homeListView = document.getElementById("home-list-view");
+	 var vehicleListView = document.getElementById("vehicle-list-view");
+	 if(obj.value=="Auto Insurance")
+	 {
+		 homeListView.style.display="none";
+		 vehicleListView.style.display="block";
+	 }
+	 if(obj.value=="Home Insurance")
+	 {
+	 	homeListView.style.display="block";
+	 	vehicleListView.style.display="none";
+	 }
+}
+</script>
+
+  </head>
+  <body>
+    <div class="page-group">
+    <div id="page-label-input" class="page">
+  <header class="bar bar-nav">
+    <a class="button button-link button-nav pull-left back" href="javascript :history.back(-1)">
+      <span class="icon icon-left"></span>
+      BACK
+    </a>
+    <h1 class="title">Policy operation</h1>
+  </header>
+  <div class="content">
+    <div class="list-block">
+      <ul>
+      	
+      	
+        
+        <!-- policy分类 下拉列表 -->
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">TYPE</div>
+              <div class="item-input">
+                <select id = "type" onchange="typeClk()">
+                	<option > Auto Insurance </option>
+                	<option > Home Insurance </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </li>
+        
+        <!-- startdate date -->
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">START DATE</div>
+              <div class="item-input">
+                <input id="start-date" type="date" >
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- enddate date -->
+        <li>
+          <div class="item-content" id="end-date-view">
+            <div class="item-inner">
+              <div class="item-title label">END DATE</div>
+              <div class="item-input">
+                <input id="end-date" type="date" >
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- Premium amount text -->
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">PREMIUM AMOUNT</div>
+              <div class="item-input">
+                <input type="text" id= "premium-amount" placeholder="$">
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- duration year text -->
+        <li>
+          <div class="item-content" id="duration">
+            <div class="item-inner">
+              <div class="item-title label">DURATION</div>
+              <div class="item-input">
+                <input type="text" id= "duration-year" placeholder="Year">
+                <input type="text" id= "duration-month" placeholder="Month">
+              </div>
+            </div>
+		  </div>
+		</li>
+		
+		<!-- 分期 下拉列表 -->
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title label">Installment</div>
+              <div class="item-input">
+                <select id = "installment">
+                	<option > One-time </option>
+                	<option > Monthly </option>
+                	<option > Yearly </option>
+                	<option > Quarterly </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </li>
+        
+        <div class="home-wrap" id="home-list-view"></div>
+        <div class="vehicle-wrap" id="vehicle-list-view"></div>
+        
+        
+    <div class="content-block">
+      <div class="row">
+        <div class="col-50"><a href="#" class="button button-big button-fill button-danger" id="show">BACK</a></div>
+        <div class="col-50"><a href="#" class="button button-big button-fill button-success" id="register">REGISTER</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='../resources/js/common/common.js' charset='utf-8'></script>
+    <script type='text/javascript' src='../resources/js/policy/policyoperation.js' charset='utf-8'></script>
+  </body>
+</html>

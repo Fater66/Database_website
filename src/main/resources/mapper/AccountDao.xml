@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fater.wds.dao.AccountDao">
+	<resultMap type="com.fater.wds.entity.Account"
+		id="accountMap">
+		<id column="account_id" property="accountId" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<association property="customer" column="customer_id"
+			javaType="com.fater.wds.entity.Customer">
+			<id column="customer_id" property="customerId" />
+			<result column="customer_last_name"
+				property="customerLastName"/>
+			<result column="customer_first_name"
+				property="customerFirstName"/>
+			<result column="customer_street_address"
+				property="customerStreetAddress"/>
+			<result column="customer_city"
+				property="customerCity"/>
+			<result column="customer_state"
+				property="customerState"/>
+			<result column="customer_zipcode"
+				property="customerZipcode"/>
+			<result column="customer_gender"
+				property="customerGender"/>
+			<result column="customer_marital_status"
+				property="customerMaritalStatus"/>
+		</association>
+	</resultMap>
+	
+	<select id="queryByAccountId" resultMap="accountMap" parameterType="Long">
+		SELECT
+		a.account_id,
+		a.username,
+		a.password,
+		c.customer_id,
+		c.customer_last_name,
+		c.customer_first_name,
+		c.customer_street_address,
+		c.customer_city,
+		c.customer_state,
+		c.customer_zipcode,
+		c.customer_gender,
+		c.customer_marital_status
+		FROM
+			account a,customer c
+		WHERE
+			a.customer_id = c.customer_id
+		AND
+			a.account_id = #{accountId}
+	</select>
+	
+	<select id="queryByAccountUsername" resultMap="accountMap" parameterType="String">
+		SELECT
+		a.account_id,
+		a.username,
+		a.password,
+		c.customer_id,
+		c.customer_last_name,
+		c.customer_first_name,
+		c.customer_street_address,
+		c.customer_city,
+		c.customer_state,
+		c.customer_zipcode,
+		c.customer_gender,
+		c.customer_marital_status
+		FROM
+			account a,customer c
+		WHERE
+			a.customer_id = c.customer_id
+		AND
+			a.username = #{username}
+	</select>
+	<insert id="insertAccount" useGeneratedKeys="true"
+		keyColumn="account_id" keyProperty="accountId">
+		Insert into
+		account(username,password,customer_id)
+		VALUES(#{username},#{password},#{customer.customerId})
+	</insert>
+</mapper>

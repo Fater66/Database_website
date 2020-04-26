@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fater.wds.dao.PaymentDao">
+	<resultMap type="com.fater.wds.entity.Payment"
+		id="paymentMap">
+		<id column="payment_id" property="paymentId" />
+		<result column="payment_date" property="paymentDate" />
+		<result column="payment_method" property="paymentMethod" />
+		<result column="payment_amount" property="paymentAmount" />
+		<result column="invoice_id" property="invoiceId" />
+		<result column="customer_id" property="customerId" />
+	</resultMap>
+	
+	<insert id="insertPayment" useGeneratedKeys="true"
+		keyColumn="payment_id" keyProperty="paymentId">
+		INSERT INTO
+		payment(payment_date,payment_method,payment_amount,invoice_id,customer_id)
+		VALUES
+		(#{paymentDate},#{paymentMethod},#{paymentAmount},#{invoiceId},#{customerId});
+	</insert>
+	
+	<select id="queryPaymentListByInvoiceId" resultMap="paymentMap" parameterType="Long">
+		select
+		p.payment_id,
+		p.payment_date,
+		p.payment_method,
+		p.payment_amount,
+		p.invoice_id,
+		p.customer_id
+		from
+		payment p where p.invoice_id=#{invoiceId};
+	</select>
+	
+</mapper>

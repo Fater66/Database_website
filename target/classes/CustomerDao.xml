@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fater.wds.dao.CustomerDao">
+		<!-- <resultMap type="com.fater.wds.entity.Customer"
+		id="customerMap">
+		<id column="customer_id" property="customerId" />
+		<result column="customer_last_name" property="customerLastName" />
+		<result column="customer_first_name" property="customerFirstName" />
+		<result column="customer_street_address" property="customerStreetAddress" />
+		<result column="customer_city" property="customerCity" />
+		<result column="customer_state" property="customerState" />
+		<result column="customer_zipcode" property="customerZipcode" />
+		<result column="customer_gender" property="customerGender" />
+		<result column="customer_marital_status" property="customerMaritalStatus" />
+	</resultMap> -->
+	
+	<select id="queryCustomer" resultType="com.fater.wds.entity.Customer">
+		SELECT customer_id,customer_last_name, customer_first_name,customer_street_address,customer_city,
+		customer_state,customer_zipcode,customer_gender,customer_marital_status
+		FROM customer
+		ORDER by customer_id 
+	</select>
+	
+	<select id="queryByCustomerId" resultType = "com.fater.wds.entity.Customer" parameterType = "Long">
+		select
+		customer_id,
+		customer_last_name,
+		customer_first_name,
+		customer_street_address,
+		customer_city,
+		customer_state,
+		customer_zipcode,
+		customer_gender,
+		customer_marital_status
+		FROM
+			customer c
+		where
+			customer_id = #{customerId};
+	</select>
+	
+	<insert id="insertCustomer" useGeneratedKeys="true"
+		keyColumn="customer_id" keyProperty="customerId">
+		INSERT INTO
+		customer(customer_last_name,customer_first_name,customer_street_address,customer_city,customer_state,customer_zipcode,
+		customer_gender,customer_marital_status)
+		VALUES
+		(#{customerLastName},#{customerFirstName},#{customerStreetAddress},#{customerCity},#{customerState},#{customerZipcode},
+		#{customerGender},#{customerMaritalStatus});
+	</insert>
+	
+	<update id="updateCustomer" parameterType="com.fater.wds.entity.Customer">
+		update customer
+		<set>
+			<if test="customerLastName!=null">customer_last_name=#{customerLastName},</if>
+			<if test="customerFirstName!=null">customer_first_name=#{customerFirstName},</if>
+			<if test="customerStreetAddress!=null">customer_street_address=#{customerStreetAddress},</if>
+			<if test="customerCity!=null">customer_city=#{customerCity},</if>
+			<if test="customerState!=null">customer_state=#{customerState},</if>
+			<if test="customerZipcode!=null">customer_zipcode=#{customerZipcode},</if>
+			<if test="customerGender!=null">customer_gender=#{customerGender},</if>
+			<if test="customerMaritalStatus!=null">customer_marital_status=#{customerMaritalStatus}</if>
+		</set>
+		where customer_id=#{customerId};
+	</update>
+</mapper>

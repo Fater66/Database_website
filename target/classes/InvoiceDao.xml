@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fater.wds.dao.InvoiceDao">
+	<resultMap type="com.fater.wds.entity.Invoice"
+		id="invoiceMap">
+		<id column="invoice_id" property="invoiceId" />
+		<result column="invoice_date" property="invoiceDate" />
+		<result column="payment_due_date" property="paymentDueDate" />
+		<result column="invoice_amount" property="invoiceAmount" />
+		<result column="policy_id" property="policyId" />
+	</resultMap>
+	
+	<insert id="insertInvoice" useGeneratedKeys="true"
+		keyColumn="invoice_id" keyProperty="invoiceId">
+		INSERT INTO
+		invoice(invoice_date,payment_due_date,invoice_amount,policy_id)
+		VALUES
+		(#{invoiceDate},#{paymentDueDate},#{invoiceAmount},#{policyId});
+	</insert>
+	
+	<select id="queryInvoiceListByPolicyId" resultMap="invoiceMap" parameterType="Long">
+		select
+		i.invoice_id,
+		i.invoice_date,
+		i.payment_due_date,
+		i.invoice_amount,
+		i.policy_id
+		from
+		invoice i left join policy p on i.policy_id = p.policy_id where p.policy_id=#{policyId};
+	</select>
+	
+</mapper>

@@ -1,0 +1,9 @@
+2020-04-26 11:27:39.675[main]DEBUG com.fater.wds.dao.PolicyDao.updatePolicy - ==>  Preparing: update policy SET type=?, start_date=?, end_date=?, premium_amount=?, status=?, customer_id=? where policy_id=?; 
+2020-04-26 11:27:39.728[main]DEBUG com.fater.wds.dao.PolicyDao.updatePolicy - ==> Parameters: A(String), 2021-02-11(Date), 2020-12-10(Date), 1000.0(Float), P(String), 1(Long), 2(Long)
+2020-04-26 11:27:39.761[main]DEBUG com.fater.wds.dao.PolicyDao.updatePolicy - <==    Updates: 1
+2020-04-26 11:28:33.426[main]DEBUG com.fater.wds.dao.PolicyDao.updatePolicy - ==>  Preparing: update policy SET type=?, start_date=?, end_date=?, premium_amount=?, status=?, customer_id=? where policy_id=?; 
+2020-04-26 11:28:33.480[main]DEBUG com.fater.wds.dao.PolicyDao.updatePolicy - ==> Parameters: A(String), 2020-10-11(Date), 2020-12-10(Date), 1000.0(Float), P(String), 1(Long), 2(Long)
+2020-04-26 11:28:33.492[main]DEBUG com.fater.wds.dao.PolicyDao.updatePolicy - <==    Updates: 1
+2020-04-26 17:30:33.822[main]DEBUG com.fater.wds.dao.PolicyDao.updatePolicy - ==>  Preparing: update policy SET type=?, start_date=?, end_date=?, premium_amount=?, status=?, customer_id=? where policy_id=?; 
+2020-04-26 17:30:33.870[main]DEBUG com.fater.wds.dao.PolicyDao.updatePolicy - ==> Parameters: A(String), 2020-10-11(Date), 2020-04-26(Date), 1000.0(Float), P(String), 1(Long), 2(Long)
+2020-04-26 17:30:33.898[main]DEBUG com.fater.wds.dao.PolicyDao.updatePolicy - <==    Updates: 1

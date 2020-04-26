@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fater.wds.dao.PolicyDao">
+		<resultMap type="com.fater.wds.entity.Policy"
+		id="policyMap">
+		<id column="policy_id" property="policyId" />
+		<result column="type" property="type" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="premium_amount" property="premiumAmount" />
+		<result column="status" property="status" />
+		<association property="customer" column="customer_id"
+			javaType="com.fater.wds.entity.Customer">
+			<id column="customer_id" property="customerId" />
+			<result column="customer_last_name"
+				property="customerLastName"/>
+			<result column="customer_first_name"
+				property="customerFirstName"/>
+			<result column="customer_street_address"
+				property="customerStreetAddress"/>
+			<result column="customer_city"
+				property="customerCity"/>
+			<result column="customer_state"
+				property="customerState"/>
+			<result column="customer_zipcode"
+				property="customerZipcode"/>
+			<result column="customer_gender"
+				property="customerGender"/>
+			<result column="customer_marital_status"
+				property="customerMaritalStatus"/>
+		</association>
+	</resultMap>
+	
+	<select id="queryByPolicyId" resultMap = "policyMap" parameterType = "Long">
+		select
+		p.policy_id,
+		p.type,
+		p.start_date,
+		p.end_date,
+		p.premium_amount,
+		p.status,
+		c.customer_id,
+		c.customer_last_name,
+		c.customer_first_name,
+		c.customer_street_address,
+		c.customer_city,
+		c.customer_state,
+		c.customer_zipcode,
+		c.customer_gender,
+		c.customer_marital_status
+		FROM
+			policy p,customer c
+		where
+			p.customer_id=c.customer_id
+			and
+			p.policy_id = #{policyId};
+	</select>
+	<insert id="insertPolicy" useGeneratedKeys="true"
+		keyColumn="policy_id" keyProperty="policyId">
+		INSERT INTO
+		policy(type,start_date,end_date,premium_amount,status,customer_id)
+		VALUES
+		(#{type},#{startDate},#{endDate},#{premiumAmount},#{status},#{customer.customerId})
+	</insert>
+	
+	<update id="updatePolicy" parameterType="com.fater.wds.entity.Policy">
+		update policy
+		<set>
+			<if test="type!=null">type=#{type},</if>
+			<if test="startDate!=null">start_date=#{startDate},</if>
+			<if test="endDate!=null">end_date=#{endDate},</if>
+			<if test="premiumAmount!=null">premium_amount=#{premiumAmount},</if>
+			<if test="status!=null">status=#{status},</if>
+			<if test="customer!=null">customer_id=#{customer.customerId}</if>
+		</set>
+		where policy_id=#{policyId};
+	</update>
+	<select id="queryPolicyList" resultMap="policyMap">
+		SELECT
+		p.policy_id,
+		p.type,
+		p.start_date,
+		p.end_date,
+		p.premium_amount,
+		p.status,
+		c.customer_id,
+		c.customer_last_name,
+		c.customer_first_name,
+		c.customer_street_address,
+		c.customer_city,
+		c.customer_state,
+		c.customer_zipcode,
+		c.customer_gender,
+		c.customer_marital_status
+		FROM
+			policy p,customer c
+		<where>
+			<if test="policyCondition.customer!=null and policyCondition.customer.customerId!=null">
+				and p.customer_id = #{policyCondition.customer.customerId}
+			</if>
+			<if test="policyCondition.type!=null">
+				and p.type = #{policyCondition.type}
+			</if>
+			<if test="policyCondition.status!=null">
+				and p.status=#{policyCondition.status}
+			</if>
+			AND
+			p.customer_id=c.customer_id
+		</where>
+		ORDER BY
+		p.start_date
+		LIMIT #{rowIndex},#{pageSize};
+	</select>
+	<!-- 因为分页查询所以需要查找总数 -->
+	<select id="queryPolicyCount" resultType="int">
+		select count(1)
+		from policy p,customer c
+		<where>
+			<if test="policyCondition.customer!=null and policyCondition.customer.customerId!=null">
+				and p.customer_id = #{policyCondition.customer.customerId}
+			</if>
+			<if test="policyCondition.type!=null">
+				and p.type = #{policyCondition.type}
+			</if>
+			<if test="policyCondition.status!=null">
+				and p.status=#{policyCondition.status}
+			</if>
+			AND
+			p.customer_id=c.customer_id
+		</where>
+	</select>
+</mapper>

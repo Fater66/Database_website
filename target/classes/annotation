@@ -1,0 +1,15 @@
+dao：与数据库打交道
+dto：弥补dao的不足，可以实现是否返回成功的操作,包含policyExecution等类
+
+policyadmincontroller:因为无法直接访问webinf内的html，用来实现webinf内的html的映射关系
+
+jar包：
+junit 4.12:为单元测试提供支持
+spring beans：动态创建所需要的类 ——控制反转
+spring-jdbc：包含spring对jdbc数据访问进行封装的所有类
+spring-tx: 为jdbc，hibernate，jdo，jpa等提供一致的声明式和编程式事务管理——事务管理。
+spring web:	web应用开发所用到的spring框架的核心类，比如自动载入，文件上传
+spring-webmvc：包含springMVC框架相关的所有类 ———— 比如dispatcher servlet
+spring-test : 对junit等测试框架进行简单封装 scope是test
+javax.servlet:提供web servlet服务
+c3p0:连接池

@@ -1,0 +1,19 @@
+.row-policy {
+    border: 1px solid #999;
+    padding: .5rem;
+    border-bottom: none;
+}
+.row-policy:last-child {
+    border-bottom: 1px solid #999;
+}
+.policy-name {
+    white-space: nowrap;
+    overflow-x: scroll;
+}
+.policy-wrap a {
+
+}
+
+.mb {
+    margin-bottom: .5rem;
+}

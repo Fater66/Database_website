@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fater.wds.dao.DriverDao">
+	<resultMap type="com.fater.wds.entity.Driver" id="driverMap">
+		<id column="driver_id" property="driverId" />
+		<result column="driver_license_id" property="driverLicenseId" />
+		<result column="driver_last_name" property="driverLastName" />
+		<result column="driver_first_name" property="driverFirstName" />
+		<result column="driver_birth_date" property="driverBirthDate" />
+		<result column="vehicle_id" property="vehicleId" />
+		<result column="customer_id" property="customerId" />
+	</resultMap>
+	<insert id="insertDriver" useGeneratedKeys="true"
+		keyColumn="driver_id" keyProperty="driverId">
+		INSERT INTO
+		driver(driver_license_id,driver_last_name,driver_first_name,driver_birth_date,vehicle_id,customer_id)
+		VALUES
+		(#{driverLicenseId},#{driverLastName},#{driverFirstName},#{driverBirthDate},#{vehicleId},#{customerId});
+	</insert>
+	<select id="queryDriverListByCustomerId" resultMap="driverMap"
+		parameterType="Long">
+		select
+		d.driver_id,
+		d.driver_license_id,
+		d.driver_last_name,
+		d.driver_first_name,
+		d.driver_birth_date,
+		d.vehicle_id
+		from driver d
+		where
+			d.customer_id = #{customerId};
+	</select>
+	
+	<select id="queryDriverListByVehicleId" resultMap="driverMap"
+		parameterType="Long">
+		select
+		d.driver_id,
+		d.driver_license_id,
+		d.driver_last_name,
+		d.driver_first_name,
+		d.driver_birth_date,
+		d.vehicle_id
+		from driver d
+		where
+			d.vehicle_id = #{vehicleId};
+	</select>
+	
+	<select id="queryByDriverId"
+		resultType="com.fater.wds.entity.Driver" parameterType="Long">
+		select
+		d.driver_id,
+		d.driver_license_id,
+		d.driver_last_name,
+		d.driver_first_name,
+		d.driver_birth_date,
+		d.vehicle_id
+		from driver d
+		where
+			d.driver_id = #{driverId};
+	</select>
+	<update id="updateDriver"
+		parameterType="com.fater.wds.entity.Driver">
+		update driver
+		<set>
+			<if test="driverLicenseId!=null">driver_license_id=#{driverLicenseId},</if>
+			<if test="driverLastName!=null">driver_last_name=#{driverLastName},</if>
+			<if test="driverFirstName!=null">driver_first_name=#{driverFirstName},</if>
+			<if test="driverBirthDate!=null">driver_birth_date=#{driverBirthDate},</if>
+			<if test="vehicleId!=null">vehicle_id=#{vehicleId},</if>
+			<if test="customerId!=null">customer_id=#{customerId}</if>
+		</set>
+		where driver_id=#{driverId};
+	</update>
+</mapper>
