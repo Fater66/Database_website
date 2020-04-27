@@ -19,6 +19,7 @@ import com.fater.wds.enums.AccountStateEnum;
 import com.fater.wds.service.AccountService;
 import com.fater.wds.service.CustomerService;
 import com.fater.wds.util.HttpServletRequestUtil;
+import com.fater.wds.util.MD5Util;
 
 @Controller
 @RequestMapping("/accountadmin")
@@ -66,38 +67,31 @@ public class AccountManagementController {
 		Account account = null;
 		try {
 			account = mapper.readValue(accountStr,Account.class);
+			account.setPassword(MD5Util.md5(account.getPassword()).substring(0,20));
 		}catch(Exception e)
 		{
 			modelMap.put("success",false);
 			modelMap.put("errMsg",e.getMessage());
 			return modelMap;
 		}
-		if(account!=null)
+		//初始化一个customer
+		Customer customer = initCustomer();
+		customer.setCustomerZipcode("00000");
+		customerService.addCustomer(customer);
+		account.setCustomer(customer);
+		AccountExecution ae = accountService.addAccount(account);
+		if(ae.getState() == AccountStateEnum.CHECK.getState())
 		{
-			//初始化一个customer
-			Customer customer = initCustomer();
-			customerService.addCustomer(customer);
-			account.setCustomer(customer);
-			AccountExecution ae = accountService.addAccount(account);
-			if(ae.getState() == AccountStateEnum.CHECK.getState())
-			{
-				modelMap.put("success",true);
-				request.getSession().setAttribute("account", account);
-				request.getSession().setAttribute("customer", account.getCustomer());
-			}
-			else
-			{
-				modelMap.put("success",false);
-				modelMap.put("errMsg",ae.getStateInfo());
-			}
-			return modelMap;
+			modelMap.put("success",true);
+			request.getSession().setAttribute("account", account);
+			request.getSession().setAttribute("customer", account.getCustomer());
 		}
 		else
 		{
 			modelMap.put("success",false);
-			modelMap.put("errMsg","please enter the account information");
-			return modelMap;
+			modelMap.put("errMsg",ae.getStateInfo());
 		}
+		return modelMap;
 	}
 	
 	@RequestMapping(value = "/initlogin",method = RequestMethod.POST)
@@ -138,7 +132,8 @@ public class AccountManagementController {
 		{
 			Account innerAccount = accountService.loginAccount(account.getUsername());
 			//密码一致 登陆成功
-			if(account.getPassword().equals(innerAccount.getPassword()))
+			String encrypted =MD5Util.md5(account.getPassword()).substring(0,20);
+			if(encrypted.equals(innerAccount.getPassword()))
 			{
 				modelMap.put("success",true);
 				Long accountId = innerAccount.getAccountId();
