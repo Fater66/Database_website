@@ -7,6 +7,8 @@
 
 $(function() {
 	getlist();
+	var filterView = document.getElementById('filter-view');
+	filterView.style.display="none";
 	function getlist(e) {
 		$.ajax({
 			url : "/wds/vehicleadmin/getvehiclelist",
@@ -22,6 +24,32 @@ $(function() {
 			}
 		});
 	}
+	
+	$('#search').click(function()
+			{
+				var vehicleCondition = {};
+				if($('#vehicle-vin-search').val()!="") vehicleCondition.vehicleVin = $('#vehicle-vin-search').val();
+				if($('#vehicle-mmy-search').val()!="") vehicleCondition.vehicleMmy = $('#vehicle-mmy-search').val();
+				vehicleCondition.vehicleStatus = $('#vehicle-status-search').val();
+				var formData = new FormData();
+				formData.append('vehicleConditionStr',JSON.stringify(vehicleCondition));
+				$.ajax({
+					url:("/wds/vehicleadmin/searchvehiclelist"),
+					type:'POST',
+					data:formData,
+					contentType:false,
+					processData:false,
+					cache:false,
+					success:function(data){
+						if(data.success){
+							handleList(data.vehicleList);
+						}else{
+							$.toast('search fail'+data.errMsg);
+						}
+					}
+				});
+			});
+	
 	function handleModifyCustomer(data) {
 		document.getElementById("modify-customer").href = "/wds/customeradmin/customeroperation?customerId="
 				+ data.customerId;

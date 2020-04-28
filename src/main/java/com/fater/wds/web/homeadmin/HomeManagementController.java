@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fater.wds.dto.HomeExecution;
-import com.fater.wds.dto.PolicyExecution;
 import com.fater.wds.entity.Account;
 import com.fater.wds.entity.Customer;
 import com.fater.wds.entity.Home;
-import com.fater.wds.entity.Policy;
 import com.fater.wds.enums.HomeStateEnum;
 import com.fater.wds.service.HomeService;
 import com.fater.wds.util.HttpServletRequestUtil;

@@ -50,6 +50,34 @@
 		from vehicle v left join vehicle_policy vp on v.vehicle_id = vp.vehicle_id where vp.policy_id=#{policyId};
 	</select>
 	
+	<select id="queryVehicleListByCondition" resultMap="vehicleMap">
+		SELECT
+		v.vehicle_id,
+		v.vehicle_vin,
+		v.vehicle_mmy,
+		v.vehicle_status, 
+		v.customer_id
+		FROM
+		vehicle v
+		<where>
+			<if
+				test="vehicleCondition.customerId!=null">
+				and v.customer_id = #{vehicleCondition.customerId}
+			</if>
+			<if test="vehicleCondition.vehicleVin!=null">
+				and v.vehicle_vin REGEXP #{vehicleCondition.vehicleVin}
+			</if>
+			<if test="vehicleCondition.vehicleMmy!=null">
+				and v.vehicle_mmy REGEXP #{vehicleCondition.vehicleMmy}
+			</if>
+			<if test="vehicleCondition.vehicleStatus!=null">
+				and v.vehicle_status = #{vehicleCondition.vehicleStatus}
+			</if>
+		</where>
+		ORDER BY
+		v.vehicle_id;
+	</select>
+	
 	<update id="updateVehicle"
 		parameterType="com.fater.wds.entity.Vehicle">
 		update vehicle

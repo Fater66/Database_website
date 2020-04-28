@@ -87,4 +87,18 @@ public class VehicleServiceImpl implements VehicleService {
 		}
 		return he;
 	}
+	
+	@Override
+	public VehicleExecution getVehicleList(Vehicle vehicleCondition) {
+		List<Vehicle> vehicleList=vehicleDao.queryVehicleListByCondition(vehicleCondition);
+		VehicleExecution he = new VehicleExecution();
+		if(vehicleList != null)
+		{
+			he.setVehicleList(vehicleList);
+		}else
+		{
+			he.setState(VehicleStateEnum.INNER_ERROR.getState());
+		}
+		return he;
+	}
 }

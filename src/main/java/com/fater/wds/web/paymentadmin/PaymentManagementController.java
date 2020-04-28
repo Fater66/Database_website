@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fater.wds.dto.DriverExecution;
 import com.fater.wds.dto.PaymentExecution;
 import com.fater.wds.entity.Account;
-import com.fater.wds.entity.Driver;
 import com.fater.wds.entity.Payment;
-import com.fater.wds.enums.DriverStateEnum;
 import com.fater.wds.enums.PaymentStateEnum;
 import com.fater.wds.service.PaymentService;
 import com.fater.wds.util.HttpServletRequestUtil;

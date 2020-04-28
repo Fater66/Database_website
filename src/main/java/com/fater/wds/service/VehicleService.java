@@ -14,5 +14,7 @@ public interface VehicleService {
 	public Vehicle getByVehicleId(long vehicleId);
 	
 	public VehicleExecution modifyVehicle(Vehicle vehicle);
+	
+	public VehicleExecution getVehicleList(Vehicle vehicleCondition);
 
 }

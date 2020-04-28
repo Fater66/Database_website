@@ -33,6 +33,53 @@ public class VehicleManagementController {
 	@Autowired
 	private DriverService driverService;
 
+	@RequestMapping(value = "/searchvehiclelist",method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String,Object> searchVehicleList(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		
+		Account account = (Account)request.getSession().getAttribute("account");
+		if(account == null)
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg","need to log in");
+			return modelMap;
+		}
+		if(account.getCustomer() == null)
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg","need to create customer information");
+			return modelMap;
+		}
+		Customer customer = account.getCustomer();
+		
+		try {
+			String vehicleConditionStr = HttpServletRequestUtil.getString(request, "vehicleConditionStr");
+			Vehicle vehicleCondition = null;
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				vehicleCondition = mapper.readValue(vehicleConditionStr, Vehicle.class);
+			}catch(Exception e)
+			{
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.getMessage());
+				return modelMap;
+			}
+			vehicleCondition.setCustomerId(customer.getCustomerId());
+			
+			VehicleExecution ve = vehicleService.getVehicleList(vehicleCondition);
+			modelMap.put("vehicleList",ve.getVehicleList());
+			modelMap.put("customer",customer);
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.getMessage());
+		}
+		return modelMap;
+	}
+	
 	@RequestMapping(value = "/getvehiclelistbypolicyid",method = RequestMethod.GET)
 	@ResponseBody
 	private Map<String,Object> getVehicleListByPolicyId(HttpServletRequest request)

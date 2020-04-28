@@ -37,3 +37,14 @@
 2020-04-28 16:37:30.426[main]DEBUG com.fater.wds.dao.HomeDao.queryHomeListByCondition - ==>  Preparing: SELECT h.home_id, h.home_purchase_date, h.home_purchase_value, h.home_area, h.home_type, h.auto_fire_notification, h.home_security_system, h.swimming_pool, h.basement FROM home h WHERE h.customer_id = ? and h.home_area >= ? and ? >= h.home_area ORDER BY h.home_purchase_date; 
 2020-04-28 16:37:30.464[main]DEBUG com.fater.wds.dao.HomeDao.queryHomeListByCondition - ==> Parameters: 4(Long), 800.0(Float), 900.0(Float)
 2020-04-28 16:37:30.496[main]DEBUG com.fater.wds.dao.HomeDao.queryHomeListByCondition - <==      Total: 3
+2020-04-28 18:05:50.559[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - ==>  Preparing: SELECT v.vehicle_id, v.vehicle_vin, v.vehicle_mmy, v.vehicle_status, v.customer_id FROM vehicle v WHERE v.customer_id = ? and h.vehicle_mmy REGEXP ? ORDER BY v.vehicle_id; 
+2020-04-28 18:05:50.603[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - ==> Parameters: 4(Long), BMW(String)
+2020-04-28 18:06:13.664[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - ==>  Preparing: SELECT v.vehicle_id, v.vehicle_vin, v.vehicle_mmy, v.vehicle_status, v.customer_id FROM vehicle v WHERE v.customer_id = ? and v.vehicle_mmy REGEXP ? ORDER BY v.vehicle_id; 
+2020-04-28 18:06:13.710[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - ==> Parameters: 4(Long), BMW(String)
+2020-04-28 18:06:13.739[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - <==      Total: 0
+2020-04-28 18:06:48.147[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - ==>  Preparing: SELECT v.vehicle_id, v.vehicle_vin, v.vehicle_mmy, v.vehicle_status, v.customer_id FROM vehicle v WHERE v.customer_id = ? and v.vehicle_mmy REGEXP ? ORDER BY v.vehicle_id; 
+2020-04-28 18:06:48.190[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - ==> Parameters: 4(Long), BMW(String)
+2020-04-28 18:06:48.222[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - <==      Total: 2
+2020-04-28 18:07:51.245[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - ==>  Preparing: SELECT v.vehicle_id, v.vehicle_vin, v.vehicle_mmy, v.vehicle_status, v.customer_id FROM vehicle v WHERE v.customer_id = ? and v.vehicle_vin REGEXP ? ORDER BY v.vehicle_id; 
+2020-04-28 18:07:51.288[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - ==> Parameters: 4(Long), HGB(String)
+2020-04-28 18:07:51.328[main]DEBUG c.f.wds.dao.VehicleDao.queryVehicleListByCondition - <==      Total: 7
