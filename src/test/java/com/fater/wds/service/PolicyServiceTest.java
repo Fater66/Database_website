@@ -24,7 +24,7 @@ public class PolicyServiceTest extends BaseTest{
 		customer.setCustomerId(4L);
 		policyCondition.setCustomer(customer);
 		
-		PolicyExecution pe= policyService.getPolicyList(policyCondition, 2, 5);
+		PolicyExecution pe= policyService.getPolicyList(policyCondition);
 		System.out.println("policy list size is" +pe.getPolicyList().size());
 		System.out.println("policy amount is " + pe.getCount());
 		System.out.println(pe.getPolicyList().get(0).getStartDate());

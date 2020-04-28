@@ -20,7 +20,8 @@ public interface PolicyDao {
 	 * @param pageSize 返回的条数
 	 * @return
 	 */
-	List<Policy> queryPolicyList(@Param("policyCondition")Policy policyCondition,@Param("rowIndex")int rowIndex,@Param("pageSize") int pageSize);
+//	List<Policy> queryPolicyList(@Param("policyCondition")Policy policyCondition,@Param("rowIndex")int rowIndex,@Param("pageSize") int pageSize);
+	List<Policy> queryPolicyList(@Param("policyCondition") Policy policyCondition);
 	/*
 	 * 通过ID查找policy
 	 * @param policyId

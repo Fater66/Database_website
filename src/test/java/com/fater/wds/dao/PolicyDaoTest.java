@@ -19,7 +19,7 @@ public class PolicyDaoTest extends BaseTest{
 	private PolicyDao policyDao;
 	
 	@Test
-	@Ignore
+//	@Ignore
 	public void testQueryPolicyListAndCount()
 	{
 		Policy policyCondition = new Policy();
@@ -27,7 +27,7 @@ public class PolicyDaoTest extends BaseTest{
 		customer.setCustomerId(4L);
 		policyCondition.setCustomer(customer);
 		policyCondition.setStatus("P");
-		List<Policy> policyList = policyDao.queryPolicyList(policyCondition, 0, 6);
+		List<Policy> policyList = policyDao.queryPolicyList(policyCondition);
 //		int count = policyDao.queryPolicyCount(policyCondition);
 //		assertEquals(count,5);
 		System.out.println(policyList.size());
@@ -57,7 +57,7 @@ public class PolicyDaoTest extends BaseTest{
 	}
 	
 	@Test
-//	@Ignore
+	@Ignore
 	public void testUpdatePolicy()
 	{
 		Policy policy = new Policy();

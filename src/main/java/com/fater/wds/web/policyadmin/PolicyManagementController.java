@@ -133,11 +133,56 @@ public class PolicyManagementController {
 			return modelMap;
 		}
 		Customer customer = account.getCustomer();
-		
 		try {
 			Policy policyCondition = new Policy();
 			policyCondition.setCustomer(customer);
-			PolicyExecution pe = policyService.getPolicyList(policyCondition,0, 100);
+			PolicyExecution pe = policyService.getPolicyList(policyCondition);
+			modelMap.put("policyList",pe.getPolicyList());
+			modelMap.put("customer",customer);
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.getMessage());
+		}
+		return modelMap;
+	}
+	
+	@RequestMapping(value = "/searchpolicylist",method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String,Object> searchPolicyList(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		
+		Account account = (Account)request.getSession().getAttribute("account");
+		if(account == null)
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg","need to log in");
+			return modelMap;
+		}
+		if(account.getCustomer() == null)
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg","need to create customer information");
+			return modelMap;
+		}
+		Customer customer = account.getCustomer();
+		
+		try {
+			String policyConditionStr = HttpServletRequestUtil.getString(request, "policyConditionStr");
+			Policy policyCondition = null;
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				policyCondition = mapper.readValue(policyConditionStr, Policy.class);
+			}catch(Exception e)
+			{
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.getMessage());
+				return modelMap;
+			}
+			policyCondition.setCustomer(customer);
+			PolicyExecution pe = policyService.getPolicyList(policyCondition);
 			modelMap.put("policyList",pe.getPolicyList());
 			modelMap.put("customer",customer);
 			modelMap.put("success",true);

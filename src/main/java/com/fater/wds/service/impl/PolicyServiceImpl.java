@@ -80,9 +80,8 @@ public class PolicyServiceImpl implements PolicyService{
 	}
 
 	@Override
-	public PolicyExecution getPolicyList(Policy policyCondition, int pageIndex, int pageSize) {
-		int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
-		List<Policy> policyList=policyDao.queryPolicyList(policyCondition, rowIndex, pageSize);
+	public PolicyExecution getPolicyList(Policy policyCondition) {
+		List<Policy> policyList=policyDao.queryPolicyList(policyCondition);
 		int count = policyDao.queryPolicyCount(policyCondition);
 		PolicyExecution pe = new PolicyExecution();
 		if(policyList != null)

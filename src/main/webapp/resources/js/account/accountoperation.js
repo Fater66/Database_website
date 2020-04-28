@@ -8,6 +8,8 @@ $(function(){
 	var registerAccountUrl = '/wds/accountadmin/registeraccount';
 	var policyListUrl = '/wds/policyadmin/policylist';
 	var loginAccountUrl = '/wds/accountadmin/loginaccount';
+	var adminloginAccountUrl = '/wds/administrateradmin/loginadministrater';
+	var administraterUrl = '/wds/administrateradmin/administrateroperation';
 	var initLogInUrl = '/wds/accountadmin/initlogin';
 	initlogin();
 	function initlogin(e){
@@ -81,22 +83,36 @@ $(function(){
 				}
 			});
 		}
-//		$.ajax({
-//			url:(loginAccountUrl),
-//			type:'GET',
-//			data:formData,
-//			contentType:false,
-//			processData:false,
-//			cache:false,
-//			success:function(data){
-//				if(data.success){
-//					$.toast("log in success");
-//				}
-//				else{
-//					$.toast("log in fail" + data.errMsg);
-//				}
-//			}
-//		})
+		
+	})
+	
+	$('#adminlogin').click(function(){
+		var administrater = {};
+		administrater.username=$('#username').val();
+		administrater.password=$('#password').val();
+		var formData = new FormData();
+		formData.append('administraterStr',JSON.stringify(administrater));
+		login();
+		function login(e){
+			$.ajax({
+				url:adminloginAccountUrl,
+				type:"POST",
+				data:formData,
+				contentType:false,
+				processData:false,
+				cache:false,
+				dataType:"json",
+				success:function(data){
+					if(data.success){
+						window.location.href=administraterUrl;
+					}
+					else
+					{
+						$.toast("Fail to log in:" + data.errMsg);
+					}
+				}
+			});
+		}
 		
 	})
 })

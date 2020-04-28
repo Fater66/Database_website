@@ -3,8 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fater.wds.dao.PolicyDao">
-		<resultMap type="com.fater.wds.entity.Policy"
-		id="policyMap">
+	<resultMap type="com.fater.wds.entity.Policy" id="policyMap">
 		<id column="policy_id" property="policyId" />
 		<result column="type" property="type" />
 		<result column="start_date" property="startDate" />
@@ -15,25 +14,22 @@
 			javaType="com.fater.wds.entity.Customer">
 			<id column="customer_id" property="customerId" />
 			<result column="customer_last_name"
-				property="customerLastName"/>
+				property="customerLastName" />
 			<result column="customer_first_name"
-				property="customerFirstName"/>
+				property="customerFirstName" />
 			<result column="customer_street_address"
-				property="customerStreetAddress"/>
-			<result column="customer_city"
-				property="customerCity"/>
-			<result column="customer_state"
-				property="customerState"/>
-			<result column="customer_zipcode"
-				property="customerZipcode"/>
-			<result column="customer_gender"
-				property="customerGender"/>
+				property="customerStreetAddress" />
+			<result column="customer_city" property="customerCity" />
+			<result column="customer_state" property="customerState" />
+			<result column="customer_zipcode" property="customerZipcode" />
+			<result column="customer_gender" property="customerGender" />
 			<result column="customer_marital_status"
-				property="customerMaritalStatus"/>
+				property="customerMaritalStatus" />
 		</association>
 	</resultMap>
-	
-	<select id="queryByPolicyId" resultMap = "policyMap" parameterType = "Long">
+
+	<select id="queryByPolicyId" resultMap="policyMap"
+		parameterType="Long">
 		select
 		p.policy_id,
 		p.type,
@@ -51,11 +47,11 @@
 		c.customer_gender,
 		c.customer_marital_status
 		FROM
-			policy p,customer c
+		policy p,customer c
 		where
-			p.customer_id=c.customer_id
-			and
-			p.policy_id = #{policyId};
+		p.customer_id=c.customer_id
+		and
+		p.policy_id = #{policyId};
 	</select>
 	<insert id="insertPolicy" useGeneratedKeys="true"
 		keyColumn="policy_id" keyProperty="policyId">
@@ -64,8 +60,9 @@
 		VALUES
 		(#{type},#{startDate},#{endDate},#{premiumAmount},#{status},#{customer.customerId})
 	</insert>
-	
-	<update id="updatePolicy" parameterType="com.fater.wds.entity.Policy">
+
+	<update id="updatePolicy"
+		parameterType="com.fater.wds.entity.Policy">
 		update policy
 		<set>
 			<if test="type!=null">type=#{type},</if>
@@ -95,9 +92,10 @@
 		c.customer_gender,
 		c.customer_marital_status
 		FROM
-			policy p,customer c
+		policy p,customer c
 		<where>
-			<if test="policyCondition.customer!=null and policyCondition.customer.customerId!=null">
+			<if
+				test="policyCondition.customer!=null and policyCondition.customer.customerId!=null">
 				and p.customer_id = #{policyCondition.customer.customerId}
 			</if>
 			<if test="policyCondition.type!=null">
@@ -106,19 +104,29 @@
 			<if test="policyCondition.status!=null">
 				and p.status=#{policyCondition.status}
 			</if>
+			<if test="policyCondition.startDate!=null">
+				and DATEDIFF(start_date,#{policyCondition.startDate})>0
+			</if>
+			<if test="policyCondition.endDate!=null">
+				and DATEDIFF(#{policyCondition.endDate},end_date)>0
+			</if>
+			<if test="policyCondition.premiumAmount!=null">
+				and p.premium_amount > #{policyCondition.premiumAmount}
+			</if>
 			AND
 			p.customer_id=c.customer_id
 		</where>
 		ORDER BY
-		p.start_date
-		LIMIT #{rowIndex},#{pageSize};
+		p.start_date;
+		<!-- LIMIT #{rowIndex},#{pageSize}; -->
 	</select>
 	<!-- 因为分页查询所以需要查找总数 -->
 	<select id="queryPolicyCount" resultType="int">
 		select count(1)
 		from policy p,customer c
 		<where>
-			<if test="policyCondition.customer!=null and policyCondition.customer.customerId!=null">
+			<if
+				test="policyCondition.customer!=null and policyCondition.customer.customerId!=null">
 				and p.customer_id = #{policyCondition.customer.customerId}
 			</if>
 			<if test="policyCondition.type!=null">

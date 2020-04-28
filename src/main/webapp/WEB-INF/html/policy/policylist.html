@@ -30,6 +30,19 @@
 				Hello!<span id="customer-name"></span><a class="pull-right"
 					href="/wds/policyadmin/policyoperation">REGISTER POLICY</a>
 			</p>
+			<div class="row-policy">
+				<div class="col-25"><select id = "type-search" >
+                	<option > Auto Insurance </option>
+                	<option > Home Insurance </option>
+                </select></div>
+                <div class="col-10">Start Date<input id="start-date-search" type="date">
+                <div class="col-10">End Date<input id="end-date-search" type="date">
+                <div class="col-10">Premium Amount<input id="premium-amount-search" type="text">
+                <a class="button button-big"
+						id="search" ">SEARCH</a>
+              </div>
+			</div>
+			<div class="content-block"> </div>
 			<div class="row row-policy">
 				<div class="col-25">Policy Type</div>
 				<div class="col-20">Start Date</div>
@@ -62,9 +75,6 @@
 						class="button button-big button-fill"
 						id="bindOrChange" href="javascript :history.back(-1)">BACK</a>
 				</div>
-				<!-- <input id="testtext" type="text" value="" />
-<input type="radio" name="toggle" id="show" />显示
-<input type="radio" name="toggle" id="hide" />隐藏 -->
 			</div>
 		</div>
 	</div>

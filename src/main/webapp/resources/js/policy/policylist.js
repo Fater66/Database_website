@@ -26,6 +26,33 @@ $(function(){
 	}
 	
 	
+	$('#search').click(function()
+	{
+		var policyCondition = {};
+		policyCondition.type = ($('#type-search').val() == 'Auto Insurance')?'A':'H';
+		policyCondition.startDate = $('#start-date-search').val();
+		policyCondition.endDate = $('#end-date-search').val();
+		policyCondition.premiumAmount = $('#premium-amount-search').val();
+		var formData = new FormData();
+		formData.append('policyConditionStr',JSON.stringify(policyCondition));
+		
+		$.ajax({
+			url:("/wds/policyadmin/searchpolicylist"),
+			type:'POST',
+			data:formData,
+			contentType:false,
+			processData:false,
+			cache:false,
+			success:function(data){
+				if(data.success){
+					handleList(data.policyList);
+				}else{
+					$.toast('search fail'+data.errMsg);
+				}
+			}
+		});
+	});
+	
 	function handleList(data){
 		var html = '';
 		data.map(function(item,index){

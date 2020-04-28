@@ -13,7 +13,7 @@ public interface PolicyService {
 	 * @param pageSize
 	 * @return
 	 */
-	public PolicyExecution getPolicyList(Policy policyCondition,int pageIndex,int pageSize);
+	public PolicyExecution getPolicyList(Policy policyCondition);
 	
 	public PolicyExecution modifyPolicy(Policy policy);
 	

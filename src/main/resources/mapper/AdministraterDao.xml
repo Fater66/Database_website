@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fater.wds.dao.AdministraterDao">
+	<resultMap type="com.fater.wds.entity.Administrater"
+		id="administraterMap">
+		<id column="administrater_id" property="administraterId" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+	</resultMap>
+	
+	<select id="queryByAdministraterId" resultMap="administraterMap" parameterType="Long">
+		SELECT
+		a.administrater_id,
+		a.username,
+		a.password
+		FROM
+			administrater a
+		WHERE
+			a.administrater_id = #{administraterId}
+	</select>
+	
+	<select id="queryByAdministraterUsername" resultMap="administraterMap" parameterType="String">
+		SELECT
+		a.administrater_id,
+		a.username,
+		a.password
+		FROM
+			administrater a
+		WHERE
+			a.username = #{username}
+	</select>
+	<insert id="insertAdministrater" useGeneratedKeys="true"
+		keyColumn="administrater_id" keyProperty="administraterId">
+		Insert into
+		administrater(username,password)
+		VALUES(#{username},#{password})
+	</insert>
+</mapper>
