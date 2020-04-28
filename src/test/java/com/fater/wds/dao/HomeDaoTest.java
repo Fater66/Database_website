@@ -40,10 +40,24 @@ public class HomeDaoTest extends BaseTest{
 	}
 	
 	@Test
+	@Ignore
 	public void testQueryHomeListByPolicyId()
 	{
 		long policyId = 28;
 		List<Home> homeList = homeDao.queryHomeListByPolicyId(policyId);
 		System.out.println(homeList.size());
+	}
+	
+	@Test
+	public void testQueryHomeListByCondition()
+	{
+		Home homeCondition = new Home();
+		homeCondition.setCustomerId(4L);
+		List<Home> homeList = homeDao.queryHomeListByCondition(homeCondition, null, null, null, null, 800F,900f);
+		for(int i =0;i<homeList.size();i++)
+		{
+			System.out.println(homeList.get(i).getHomeArea());
+		}
+		
 	}
 }

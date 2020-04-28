@@ -26,7 +26,7 @@ public class PolicyDaoTest extends BaseTest{
 		Customer customer = new Customer();
 		customer.setCustomerId(4L);
 		policyCondition.setCustomer(customer);
-		policyCondition.setStatus("P");
+		policyCondition.setStatus("C");
 		List<Policy> policyList = policyDao.queryPolicyList(policyCondition);
 //		int count = policyDao.queryPolicyCount(policyCondition);
 //		assertEquals(count,5);

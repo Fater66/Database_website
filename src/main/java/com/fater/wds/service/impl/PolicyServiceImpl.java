@@ -12,7 +12,6 @@ import com.fater.wds.entity.Policy;
 import com.fater.wds.enums.PolicyStateEnum;
 import com.fater.wds.exceptions.PolicyOperationException;
 import com.fater.wds.service.PolicyService;
-import com.fater.wds.util.PageCalculator;
 
 @Service
 public class PolicyServiceImpl implements PolicyService{
@@ -29,43 +28,6 @@ public class PolicyServiceImpl implements PolicyService{
 		}
 		try {
 			int effectedNum = policyDao.insertPolicy(policy);
-//			int homeeffectedNum = -1,autoeffectedNum=-1;
-//			int homePolicyEffectedNum = -1,autoPolicyEffectedNum =-1;
-//			if(policy.getType().equals("H")) {
-//				//注册homeinsurance的流程
-//				HomeInsurance homeInsurance = new HomeInsurance();
-//				homeInsurance.setHomeInsuranceType("H");
-//				homeInsurance.setPolicyId(policy.getPolicyId());
-//				HomePolicy homePolicy = new HomePolicy();
-//				//session to do
-//				homePolicy.setHomeId(1L);
-//				homePolicy.setPolicyId(policy.getPolicyId());
-//				//注意顺序
-//				homeeffectedNum = homeInsuranceDao.insertHomeInsurance(homeInsurance);
-//				homePolicyEffectedNum = homePolicyDao.insertHomePolicy(homePolicy);
-//				
-//			}
-//			else if(policy.getType().equals("A"))
-//			{
-//				AutoInsurance autoInsurance = new AutoInsurance();
-//				autoInsurance.setAutoInsuranceType("A");
-//				autoInsurance.setPolicyId(policy.getPolicyId());
-//				autoeffectedNum = autoInsuranceDao.insertAutoInsurance(autoInsurance);
-//			}
-//			if(policy.getType() == "H")
-//			{
-//				if(homeeffectedNum<0)
-//					throw new PolicyOperationException("fail to add home insurance!");
-//				if(homePolicyEffectedNum <0 )
-//					throw new PolicyOperationException("fail to add home policy!");
-//			}
-//			if(policy.getType() == "A"&&autoeffectedNum<0)
-//			{
-//				if(autoeffectedNum<0)
-//					throw new PolicyOperationException("fail to add auto insurance!");
-//				if(autoPolicyEffectedNum <0 )
-//					throw new PolicyOperationException("fail to add auto policy!");
-//			}
 			if(effectedNum<0)
 			{
 				throw new PolicyOperationException("fail to add policy!");

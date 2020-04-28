@@ -7,6 +7,9 @@
 
 $(function(){
 	getlist();
+	var customerId = getQueryString('customerId');
+	var filterView = document.getElementById('filter-view');
+	filterView.style.display="none";
 	function getlist(e){
 		$.ajax({
 			url:"/wds/homeadmin/gethomelist",
@@ -22,6 +25,35 @@ $(function(){
 			}
 		});
 	}
+	
+	$('#search').click(function()
+			{
+				var homeCondition = {};
+				homeCondition.customerId = customerId;
+				var formData = new FormData();
+				formData.append('minValueStr',$('#min-value').val());
+				formData.append('maxValueStr',$('#max-value').val());
+				formData.append('minDateStr',$('#min-date').val());
+				formData.append('maxDateStr',$('#max-date').val());
+				formData.append('minAreaStr',$('#min-area').val());
+				formData.append('maxAreaStr',$('#max-area').val());
+				formData.append('homeConditionStr',JSON.stringify(homeCondition));
+				$.ajax({
+					url:("/wds/homeadmin/searchhomelist"),
+					type:'POST',
+					data:formData,
+					contentType:false,
+					processData:false,
+					cache:false,
+					success:function(data){
+						if(data.success){
+							handleList(data.homeList);
+						}else{
+							$.toast('search fail'+data.errMsg);
+						}
+					}
+				});
+			});
 	
 	function handleModifyCustomer(data)
 	{

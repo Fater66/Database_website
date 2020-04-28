@@ -1,5 +1,6 @@
 package com.fater.wds.web.homeadmin;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fater.wds.dto.HomeExecution;
+import com.fater.wds.dto.PolicyExecution;
 import com.fater.wds.entity.Account;
 import com.fater.wds.entity.Customer;
 import com.fater.wds.entity.Home;
+import com.fater.wds.entity.Policy;
 import com.fater.wds.enums.HomeStateEnum;
 import com.fater.wds.service.HomeService;
 import com.fater.wds.util.HttpServletRequestUtil;
@@ -77,6 +80,83 @@ public class HomeManagementController {
 		
 		try {
 			HomeExecution he = homeService.queryHomeByCustomerId(customer.getCustomerId());
+			modelMap.put("homeList",he.getHomeList());
+			modelMap.put("customer",customer);
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.getMessage());
+		}
+		return modelMap;
+	}
+	
+	@RequestMapping(value = "/searchhomelist",method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String,Object> searchHomeList(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		
+		Account account = (Account)request.getSession().getAttribute("account");
+		if(account == null)
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg","need to log in");
+			return modelMap;
+		}
+		if(account.getCustomer() == null)
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg","need to create customer information");
+			return modelMap;
+		}
+		Customer customer = account.getCustomer();
+		
+		try {
+			String homeConditionStr = HttpServletRequestUtil.getString(request, "homeConditionStr");
+			Date minDate = null;
+			if(HttpServletRequestUtil.getString(request, "minDateStr")!=null)
+			{
+				minDate = Date.valueOf(HttpServletRequestUtil.getString(request, "minDateStr"));
+			}
+			Date maxDate = null;
+			if(HttpServletRequestUtil.getString(request, "maxDateStr")!=null)
+			{
+				maxDate = Date.valueOf(HttpServletRequestUtil.getString(request, "maxDateStr"));
+			}
+			Float minValue = null;
+			if(HttpServletRequestUtil.getString(request, "minValueStr")!=null)
+			{
+				minValue = Float.valueOf(HttpServletRequestUtil.getString(request, "minValueStr"));
+			}
+			Float maxValue = null;
+			if(HttpServletRequestUtil.getString(request, "maxValueStr")!=null)
+			{
+				maxValue = Float.valueOf(HttpServletRequestUtil.getString(request, "maxValueStr"));
+			}
+			Float minArea = null;
+			if(HttpServletRequestUtil.getString(request, "minAreaStr")!=null)
+			{
+				minArea = Float.valueOf(HttpServletRequestUtil.getString(request, "minAreaStr"));
+			}
+			Float maxArea = null;
+			if(HttpServletRequestUtil.getString(request, "maxAreaStr")!=null)
+			{
+				maxArea = Float.valueOf(HttpServletRequestUtil.getString(request, "maxAreaStr"));
+			}
+			Home homeCondition = null;
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				homeCondition = mapper.readValue(homeConditionStr, Home.class);
+			}catch(Exception e)
+			{
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.getMessage());
+				return modelMap;
+			}
+			homeCondition.setCustomerId(customer.getCustomerId());
+			
+			HomeExecution he = homeService.getHomeList(homeCondition, minDate, maxDate, minValue, maxValue, minArea, maxArea);
 			modelMap.put("homeList",he.getHomeList());
 			modelMap.put("customer",customer);
 			modelMap.put("success",true);

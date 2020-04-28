@@ -5,6 +5,9 @@
 $(function(){
 	//获取policy list方法
 	getlist();
+	var filterView = document.getElementById('filter-view');
+	filterView.style.display="none";
+	
 	function getlist(e){
 		$.ajax({
 			url:"/wds/policyadmin/getpolicylist",

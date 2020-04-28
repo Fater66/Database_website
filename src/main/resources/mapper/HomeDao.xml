@@ -55,6 +55,59 @@
 		home h left join home_policy hp on h.home_id = hp.home_id where hp.policy_id=#{policyId};
 	</select>
 	
+	<select id="queryHomeListByCondition" resultMap="homeMap">
+		SELECT
+		h.home_id,
+		h.home_purchase_date,
+		h.home_purchase_value,
+		h.home_area,
+		h.home_type,
+		h.auto_fire_notification,
+		h.home_security_system,
+		h.swimming_pool,
+		h.basement 
+		FROM
+		home h
+		<where>
+			<if
+				test="homeCondition.customerId!=null">
+				and h.customer_id = #{homeCondition.customerId}
+			</if>
+			<if test="minDate!= null">
+				and DATEDIFF(h.home_purchase_date,#{minDate}) >=0
+			</if>
+			<if test="maxDate!=null">
+				and DATEDIFF(#{maxDate},h.home_purchase_date) >=0
+			</if>
+			<if test="minValue!=null">
+				and h.home_purchase_value >= #{minValue}
+			</if>
+			<if test="maxValue!=null">
+				and #{maxValue} >= h.home_purchase_value
+			</if>
+			<if test="minArea!=null">
+				and h.home_area >= #{minArea}
+			</if>
+			<if test="maxArea!=null">
+				and #{maxArea} >= h.home_area
+			</if>
+			<if test="homeCondition.homeType!=null">
+				and h.home_type = #{homeCondition.homeType}
+			</if>
+			<if test="homeCondition.autoFireNotification!=null">
+				and h.auto_fire_notification = #{homeCondition.autoFireNotification}
+			</if>
+			<if test="homeCondition.homeSecuritySystem!=null">
+				and h.home_security_system = #{homeCondition.homeSecuritySystem}
+			</if>
+			<if test="homeCondition.basement!=null">
+				and h.basement = #{homeCondition.basement}
+			</if>
+		</where>
+		ORDER BY
+		h.home_purchase_date;
+	</select>
+	
 	<select id="queryByHomeId" resultType = "com.fater.wds.entity.Home" parameterType = "Long">
 		select
 		h.home_id,

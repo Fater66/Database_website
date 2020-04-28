@@ -1,5 +1,6 @@
 package com.fater.wds.service.impl;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fater.wds.dao.HomeDao;
 import com.fater.wds.dto.HomeExecution;
+import com.fater.wds.dto.PolicyExecution;
 import com.fater.wds.entity.Home;
+import com.fater.wds.entity.Policy;
 import com.fater.wds.enums.HomeStateEnum;
+import com.fater.wds.enums.PolicyStateEnum;
 import com.fater.wds.exceptions.HomeOperationException;
 import com.fater.wds.service.HomeService;
 
@@ -99,6 +103,21 @@ public class HomeServiceImpl implements HomeService{
 				throw new HomeOperationException("Modify home error" + e.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public HomeExecution getHomeList(Home homeCondition, Date minDate, Date maxDate, Float minValue, Float maxValue,
+			Float minArea, Float maxArea) {
+		List<Home> homeList=homeDao.queryHomeListByCondition(homeCondition, minDate, maxDate, minValue, maxValue, minArea, maxArea);
+		HomeExecution he = new HomeExecution();
+		if(homeList != null)
+		{
+			he.setHomeList(homeList);
+		}else
+		{
+			he.setState(HomeStateEnum.INNER_ERROR.getState());
+		}
+		return he;
 	}
 
 }
