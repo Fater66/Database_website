@@ -28,6 +28,24 @@ $(function(){
 		});
 	}
 	
+	$('#logout').click(function()
+			{
+				$.ajax({
+					url:("/wds/accountadmin/logoutaccount"),
+					type:'POST',
+					contentType:false,
+					processData:false,
+					cache:false,
+					success:function(data){
+						if(data.success){
+							window.location.href='/wds/accountadmin/accountoperation';
+						}else{
+							$.toast('log out fail'+data.errMsg);
+						}
+					}
+				});
+			});
+	
 	
 	$('#search').click(function()
 	{

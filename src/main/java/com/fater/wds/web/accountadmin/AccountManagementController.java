@@ -110,6 +110,26 @@ public class AccountManagementController {
 		return modelMap;
 	}
 	
+	@RequestMapping(value = "/logoutaccount",method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String,Object> logoutAccount(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		//session to do 添加customer信息
+//		request.getSession().setAttribute("customerId", 1);
+		
+		try {
+			request.getSession().setAttribute("account", null);
+		}catch(Exception e)
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.getMessage());
+			return modelMap;
+		}
+		modelMap.put("success",true);
+		return modelMap;
+	}
+	
 	@RequestMapping(value = "/loginaccount",method = RequestMethod.POST)
 	@ResponseBody
 	private Map<String,Object> loginAccount(HttpServletRequest request)
