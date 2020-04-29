@@ -1,6 +1,8 @@
 package com.fater.wds.web.customeradmin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,26 @@ public class CustomerManagementController {
 	@Autowired
 	private CustomerService customerService;
 	
+	@RequestMapping(value = "/listcustomer",method = RequestMethod.GET)
+	//ResponseBody将返回对象自动转换成json
+	@ResponseBody
+	private Map<String,Object> listCustomer()
+	{
+		Map<String,Object> modelMap = new HashMap<String, Object>();
+		List<Customer> customerList = new ArrayList<Customer>();
+		try {
+			customerList = customerService.getCustomerList();
+			modelMap.put("customerList",customerList);
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.toString());
+		}
+		return modelMap;
+	}
+	
 	@RequestMapping(value = "/getcustomerbyid",method=RequestMethod.GET)
 	@ResponseBody
 	public Map<String,Object> getCustomerById(HttpServletRequest request)
@@ -38,6 +60,38 @@ public class CustomerManagementController {
 				Customer customer = customerService.getByCustomerId(customerId);
 				modelMap.put("customer",customer);
 				modelMap.put("success",true);
+			} catch (Exception e) {
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.toString());
+			}
+		}
+		else
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg","empty customerId");
+		}
+		return modelMap;
+	}
+	
+	@RequestMapping(value = "/deletecustomer",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> delelteCustomer(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		Long customerId = HttpServletRequestUtil.getLong(request, "customerId");
+		if(customerId > -1)
+		{
+			try {
+				CustomerExecution ce = customerService.deleteCustomer(customerId);
+				if(ce.getState() == CustomerStateEnum.SUCCESS.getState())
+				{
+					modelMap.put("success",true);
+				}
+				else
+				{
+					modelMap.put("success",false);
+					modelMap.put("errMsg",ce.getStateInfo());
+				}
 			} catch (Exception e) {
 				modelMap.put("success",false);
 				modelMap.put("errMsg",e.toString());

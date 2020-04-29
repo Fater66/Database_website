@@ -1,5 +1,7 @@
 package com.fater.wds.service;
 
+import java.util.List;
+
 import com.fater.wds.dto.PolicyExecution;
 import com.fater.wds.entity.Policy;
 
@@ -18,4 +20,6 @@ public interface PolicyService {
 	public PolicyExecution modifyPolicy(Policy policy);
 	
 	public Policy getByPolicyId(long policyId);
+	
+	public List<Policy> getAllPolicyList();
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fater.wds.dao.PolicyDao;
 import com.fater.wds.dto.PolicyExecution;
+import com.fater.wds.entity.Customer;
 import com.fater.wds.entity.Policy;
 import com.fater.wds.enums.PolicyStateEnum;
 import com.fater.wds.exceptions.PolicyOperationException;
@@ -41,6 +42,12 @@ public class PolicyServiceImpl implements PolicyService{
 		return new PolicyExecution(PolicyStateEnum.CHECK,policy);
 	}
 
+	@Override
+	public List<Policy> getAllPolicyList()
+	{
+		return policyDao.queryAllPolicy();
+	}
+	
 	@Override
 	public PolicyExecution getPolicyList(Policy policyCondition) {
 		List<Policy> policyList=policyDao.queryPolicyList(policyCondition);

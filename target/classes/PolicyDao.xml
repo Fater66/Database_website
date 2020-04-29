@@ -120,6 +120,31 @@
 		p.start_date;
 		<!-- LIMIT #{rowIndex},#{pageSize}; -->
 	</select>
+	
+	<select id="queryAllPolicy" resultMap="policyMap">
+		SELECT
+		p.policy_id,
+		p.type,
+		p.start_date,
+		p.end_date,
+		p.premium_amount,
+		p.status,
+		c.customer_id,
+		c.customer_last_name,
+		c.customer_first_name,
+		c.customer_street_address,
+		c.customer_city,
+		c.customer_state,
+		c.customer_zipcode,
+		c.customer_gender,
+		c.customer_marital_status
+		FROM
+		policy p,customer c
+		where
+			p.customer_id=c.customer_id
+		order by 
+		p.policy_id;
+	</select>
 	<!-- 因为分页查询所以需要查找总数 -->
 	<select id="queryPolicyCount" resultType="int">
 		select count(1)

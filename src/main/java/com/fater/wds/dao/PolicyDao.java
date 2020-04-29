@@ -13,6 +13,7 @@ public interface PolicyDao {
 	 */
 	int queryPolicyCount(@Param("policyCondition")Policy policyCondition);
 	
+	List<Policy> queryAllPolicy();
 	/*
 	 * 因为参数不止一个所以要加@Param
 	 * @param policyCondition

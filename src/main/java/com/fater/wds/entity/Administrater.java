@@ -5,11 +5,11 @@ public class Administrater {
 	private String username;
 	private String password;
 	
-	public Long getAdminId() {
+	public Long getAdministraterId() {
 		return administraterId;
 	}
-	public void setAdminId(Long adminId) {
-		this.administraterId = adminId;
+	public void setAdministraterId(Long administraterId) {
+		this.administraterId = administraterId;
 	}
 	public String getUsername() {
 		return username;

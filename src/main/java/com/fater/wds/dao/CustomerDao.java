@@ -19,4 +19,6 @@ public interface CustomerDao {
 	int insertCustomer(Customer customer);
 	
 	int updateCustomer(Customer customer);
+	
+	int deleteCustomer(long customerId);
 }

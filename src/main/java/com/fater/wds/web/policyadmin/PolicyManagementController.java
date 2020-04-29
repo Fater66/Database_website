@@ -22,6 +22,7 @@ import com.fater.wds.dto.InvoiceExecution;
 import com.fater.wds.dto.PolicyExecution;
 import com.fater.wds.dto.VehiclePolicyExecution;
 import com.fater.wds.entity.Account;
+import com.fater.wds.entity.Administrater;
 import com.fater.wds.entity.AutoInsurance;
 import com.fater.wds.entity.Customer;
 import com.fater.wds.entity.HomeInsurance;
@@ -113,6 +114,26 @@ public class PolicyManagementController {
 		return modelMap;
 	}
 	
+	@RequestMapping(value = "/listpolicy",method = RequestMethod.GET)
+	//ResponseBody将返回对象自动转换成json
+	@ResponseBody
+	private Map<String,Object> listPolicy()
+	{
+		Map<String,Object> modelMap = new HashMap<String, Object>();
+		List<Policy> policyList = new ArrayList<Policy>();
+		try {
+			policyList = policyService.getAllPolicyList();
+			modelMap.put("policyList",policyList);
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.toString());
+		}
+		return modelMap;
+	}
+	
 	@RequestMapping(value = "/getpolicylist",method = RequestMethod.GET)
 	@ResponseBody
 	private Map<String,Object> getPolicyList(HttpServletRequest request)
@@ -154,20 +175,25 @@ public class PolicyManagementController {
 	{
 		Map<String,Object> modelMap = new HashMap<>();
 		
+		Administrater administrater = (Administrater)request.getSession().getAttribute("administrater");
 		Account account = (Account)request.getSession().getAttribute("account");
-		if(account == null)
+		if(administrater == null)
 		{
-			modelMap.put("success", false);
-			modelMap.put("errMsg","need to log in");
-			return modelMap;
+			
+			if(account == null )
+			{
+				modelMap.put("success", false);
+				modelMap.put("errMsg","need to log in");
+				return modelMap;
+			}
+			if(account.getCustomer() == null)
+			{
+				modelMap.put("success", false);
+				modelMap.put("errMsg","need to create customer information");
+				return modelMap;
+			}
 		}
-		if(account.getCustomer() == null)
-		{
-			modelMap.put("success", false);
-			modelMap.put("errMsg","need to create customer information");
-			return modelMap;
-		}
-		Customer customer = account.getCustomer();
+		Customer customer = (account != null)? account.getCustomer():null;
 		
 		try {
 			String policyConditionStr = HttpServletRequestUtil.getString(request, "policyConditionStr");

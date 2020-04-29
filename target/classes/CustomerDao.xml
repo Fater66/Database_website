@@ -64,4 +64,10 @@
 		</set>
 		where customer_id=#{customerId};
 	</update>
+	
+	<delete id="deleteCustomer" parameterType = "Long">
+	delete from customer
+	where customer_id = #{customerId}
+	</delete>
+	
 </mapper>

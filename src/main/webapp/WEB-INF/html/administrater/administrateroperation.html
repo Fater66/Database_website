@@ -1,0 +1,156 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Policy List</title>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<link rel="shortcut icon" href="/favicon.ico">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="stylesheet"
+	href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+<link rel="stylesheet"
+	href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
+<link rel="stylesheet" href="../resources/css/policy/policylist.css">
+<script>
+function typeHidden()
+{
+	 var obj = document.getElementById('filter-view');
+	 if(obj.style.display=="block")
+	 {
+	  obj.style.display='none';
+	 }
+	 else
+	 {
+	  obj.style.display='block';
+	 }
+}
+
+function changeSearchBlock()
+{
+	var obj = document.getElementById('object-search');
+	var html = '';
+	if(obj.value == 'Policy')
+	{
+		html += '<div class="col-25"><select id = "type-search" ><option > Auto Insurance </option><option > Home Insurance </option>'
+		+'</select> Start Date<input id="start-date-search" type="date"></div>'
+		+'<div class="col-10">End Date<input id="end-date-search" type="date"> Premium Amount<input id="premium-amount-search" type="text">'
+		+'</div>'
+	}
+	else if(obj.value == 'Customer')
+	{
+		html += '<div class="col-25">'
+			+'Customer Gender<select id = "customer-gender-search" ><option >M</option><option >F</option></select>    '
+			+'Last Name<input id="customer-last-name-search" type="text"></div><div class="col-10">'
+			+'First Name<input id="customer-first-name-search" type="text"> '
+			+'Marital Status<select id = "customer-marital-status-search" ><option>S</option><option>M</option><option>W</option>'
+			+'</div>'
+	}
+	$('.search-block').html(html);
+}
+	
+function deleteCustomer(id)
+{
+	var formData = new FormData();
+	formData.append("customerId",id);
+	$.ajax({
+		url:'/wds/customeradmin/deletecustomer',
+		type:'POST',
+		data:formData,
+		contentType:false,
+		processData:false,
+		cache:false,
+		success:function(data){
+			if(data.success){
+				$.toast('delete success');
+				window.location.reload();
+			}else{
+				$.toast('delete fail'+data.errMsg);
+			}
+		}
+	});
+}
+</script>
+</head>
+<body>
+	<header class="bar bar-nav">
+		<a class="button button-link button-nav pull-left back" href="#" onClick="javascript:history.back(-1)">
+	      <span class="icon icon-left"></span>
+	      BACK
+	    </a>
+		<h1 class="title">Administrator View</h1>
+	</header>
+	<div class="content">
+		<div class="content-block">
+			<p>
+				Hello!<span id="administrater-name"></span>
+			</p>
+			<div class="title-view" > 
+			</div>
+			<div class="view-wrap"></div>
+			<div class="col-100 mb">
+					<a id="filter-button"
+						class="button button-big button-fill" onClick="typeHidden()">Filter</a>
+			</div>
+			<div class="content-block"> </div>
+			<div class="row-policy" id="filter-view">
+				<div class="col-25"><select id = "object-search" onChange="changeSearchBlock()">
+                	<option > Customer </option>
+                	<option > Policy </option>
+                	<option > Home </option>
+                	<option > Vehicle </option>
+                	<option > Driver </option>
+                	<option > Invoice </option>
+                	<option > Payment </option>
+                </select>
+                <div class = "search-block"></div>
+				<div><a class="button button-big" id="search">SEARCH</a></div>
+              
+			</div>
+			<div class="content-block"> </div>
+		</div>
+		<div class="content-block">
+			<div class="row">
+				<div class="col-50 mb">
+					<a id="view-customer"
+						class="button button-big button-fill">Customer Information</a>
+				</div>
+				<div class="col-50 mb">
+					<a href="#" id="view-policy"
+						class="button button-big button-fill">Policy Information</a>
+				</div>
+				<div class="col-50 mb">
+					<a href="#" id="view-home"
+						class="button button-big button-fill">Home Information</a>
+				</div>
+				<div class="col-50 mb">
+					<a href="#" id="view-vehicle" 
+						class="button button-big button-fill">Vehicle Information</a>
+				</div>
+				<div class="col-50 mb">
+					<a href="#" id="view-driver" 
+						class="button button-big button-fill">Driver Information</a>
+				</div>
+				<div class="col-100 mb">
+					<a class="button button-big button-fill button-danger"
+						id="logout" >LOG OUT</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<script type='text/javascript'
+		src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+	<script type='text/javascript'
+		src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+	<script type='text/javascript'
+		src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
+	<script type='text/javascript' src='../resources/js/administrater/administrateroperation.js'
+		charset='utf-8'></script>	
+</body>
+</html>

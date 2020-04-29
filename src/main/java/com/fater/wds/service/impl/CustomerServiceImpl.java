@@ -75,4 +75,23 @@ public class CustomerServiceImpl implements CustomerService{
 			}
 		}
 	}
+	
+	@Override
+	public CustomerExecution deleteCustomer(long customerId) {
+		try {
+			int effectedNum = customerDao.deleteCustomer(customerId);
+			if(effectedNum <=0)
+			{
+				return new CustomerExecution(CustomerStateEnum.INNER_ERROR);
+			}
+			else
+			{
+				return new CustomerExecution(CustomerStateEnum.SUCCESS);
+			}
+		}catch(Exception e)
+		{
+			throw new CustomerOperationException("Delete customer error" + e.getMessage());
+		}
+
+	}
 }
