@@ -15,6 +15,21 @@
 <link rel="stylesheet"
 	href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
 <link rel="stylesheet" href="../resources/css/policy/policylist.css">
+<script>
+function typeHidden()
+{
+	 var obj = document.getElementById('filter-view');
+	 if(obj.style.display=="block")
+	 {
+	  obj.style.display='none';
+	 }
+	 else
+	 {
+	  obj.style.display='block';
+	 }
+}
+
+</script>
 </head>
 <body>
 	<header class="bar bar-nav">
@@ -39,20 +54,25 @@
 			</div>
 			<div class="driver-wrap"></div>
 		</div>
-		<div class="content-block">
-			<div class="row">
-				<div class="col-50 mb">
-					<a href="#" id="modify-customer"
-						class="button button-big button-fill">Customer Information Modify</a>
-				</div>
-				<div class="col-50 mb">
-					<a href="#" id="driver-operation" usertype="2"
-						class="button button-big button-fill">Driver Information</a>
-				</div>
+		<div class="col-100 mb">
+					<a id="filter-button"
+						class="button button-big button-fill" onClick="typeHidden()">Filter</a>
 			</div>
-		</div>
+			<div class="content-block"> </div>
+			<div class="row-policy" id="filter-view">
+				<div class="col-10">Driver License id<input id="driver-license-id" type="text">
+                <div class="col-10">Driver Last Name <input id="driver-last-name" type="text">
+                <div class="col-10">Driver First Name <input id="driver-first-name" type="text">
+                <div class="col-10">Birth Date from<input id="min-date" type="date"> to <input id="max-date" type="date">
+                <a class="button button-big"
+						id="search">SEARCH</a>
+              </div>
+			</div>
+			<div class="content-block"> </div>
+			</div>
+			</div>
 	</div>
-
+</div>
 
 
 	<script type='text/javascript'

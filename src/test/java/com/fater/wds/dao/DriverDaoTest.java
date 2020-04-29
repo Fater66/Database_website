@@ -1,7 +1,9 @@
 package com.fater.wds.dao;
 
 import java.sql.Date;
+import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +15,7 @@ public class DriverDaoTest extends BaseTest{
 	private DriverDao driverDao;
 	
 	@Test
+	@Ignore
 	public void testInsertDriver()
 	{
 		Driver driver = new Driver();
@@ -24,4 +27,17 @@ public class DriverDaoTest extends BaseTest{
 		driverDao.insertDriver(driver);
 	}
 
+	@Test
+	public void testQueryDriverListByCondition()
+	{
+		Driver driverCondition = new Driver();
+		driverCondition.setCustomerId(4L);
+		driverCondition.setDriverLastName("Yilu");
+		List<Driver> driverList = driverDao.queryDriverListByCondition(driverCondition, null, null);
+		for(int i =0;i<driverList.size();i++)
+		{
+			System.out.println(driverList.get(i).getDriverFirstName());
+		}
+		
+	}
 }

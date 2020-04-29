@@ -1,5 +1,6 @@
 package com.fater.wds.web.driveradmin;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fater.wds.dto.DriverExecution;
+import com.fater.wds.dto.HomeExecution;
 import com.fater.wds.entity.Account;
 import com.fater.wds.entity.Customer;
 import com.fater.wds.entity.Driver;
+import com.fater.wds.entity.Home;
 import com.fater.wds.enums.DriverStateEnum;
 import com.fater.wds.service.DriverService;
 import com.fater.wds.util.HttpServletRequestUtil;
@@ -49,6 +52,63 @@ public class DriverManagementController {
 		{
 			modelMap.put("success",false);
 			modelMap.put("errMsg","empty vehicle id");
+		}
+		return modelMap;
+	}
+	
+	@RequestMapping(value = "/searchdriverlist",method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String,Object> searchDriverList(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		
+		Account account = (Account)request.getSession().getAttribute("account");
+		if(account == null)
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg","need to log in");
+			return modelMap;
+		}
+		if(account.getCustomer() == null)
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg","need to create customer information");
+			return modelMap;
+		}
+		Customer customer = account.getCustomer();
+		
+		try {
+			String driverConditionStr = HttpServletRequestUtil.getString(request, "driverConditionStr");
+			Date minDate = null;
+			if(HttpServletRequestUtil.getString(request, "minDateStr")!=null)
+			{
+				minDate = Date.valueOf(HttpServletRequestUtil.getString(request, "minDateStr"));
+			}
+			Date maxDate = null;
+			if(HttpServletRequestUtil.getString(request, "maxDateStr")!=null)
+			{
+				maxDate = Date.valueOf(HttpServletRequestUtil.getString(request, "maxDateStr"));
+			}
+			Driver driverCondition = null;
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				driverCondition = mapper.readValue(driverConditionStr, Driver.class);
+			}catch(Exception e)
+			{
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.getMessage());
+				return modelMap;
+			}
+			driverCondition.setCustomerId(customer.getCustomerId());
+			
+			DriverExecution de = driverService.getDriverList(driverCondition, minDate, maxDate);
+			modelMap.put("driverList",de.getDriverList());
+			modelMap.put("customer",customer);
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.getMessage());
 		}
 		return modelMap;
 	}

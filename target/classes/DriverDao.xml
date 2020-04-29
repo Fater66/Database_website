@@ -33,6 +33,36 @@
 			d.customer_id = #{customerId};
 	</select>
 	
+	<select id="queryDriverListByCondition" resultMap="driverMap">
+		SELECT
+		d.driver_id,
+		d.driver_license_id,
+		d.driver_last_name,
+		d.driver_first_name, 
+		d.driver_birth_date,
+		d.vehicle_id
+		FROM
+		driver d
+		<where>
+			<if test="driverCondition.customerId!=null">and d.customer_id = #{driverCondition.customerId}</if>
+			<if test="driverCondition.driverLicenseId!=null">
+				and d.driver_license_id REGEXP #{driverCondition.driverLicenseId}
+			</if>
+			<if test="driverCondition.driverLastName!=null">
+				and d.driver_last_name REGEXP #{driverCondition.driverLastName}
+			</if>
+			<if test="driverCondition.driverFirstName!=null">
+				and d.driver_first_name REGEXP #{driverCondition.driverFirstName}
+			</if>
+			<if test="minDate!=null">
+				and DATEDIFF(d.driver_birth_date,#{minDate}) >=0
+			</if>
+			<if test="minDate!=null">
+				and DATEDIFF(#{maxDate},d.driver_birth_date) >=0
+			</if>
+		</where>
+	</select>
+	
 	<select id="queryDriverListByVehicleId" resultMap="driverMap"
 		parameterType="Long">
 		select

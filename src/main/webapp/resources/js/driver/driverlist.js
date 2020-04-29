@@ -7,6 +7,9 @@
 
 $(function(){
 	getlist();
+	var filterView = document.getElementById('filter-view');
+	filterView.style.display="none";
+	
 	function getlist(e){
 		$.ajax({
 			url:"/wds/driveradmin/getdriverlist",
@@ -22,6 +25,33 @@ $(function(){
 			}
 		});
 	}
+	
+	$('#search').click(function()
+			{
+				var driverCondition = {};
+				if($('#driver-license-id').val()!="") driverCondition.driverLicenseId = $('#driver-license-id').val();
+				if($('#driver-last-name').val()!="") driverCondition.driverLastName = $('#driver-last-name').val();
+				if($('#driver-first-name').val()!="") driverCondition.driverFirstName= $('#driver-first-name').val();
+				var formData = new FormData();
+				formData.append('minDateStr',$('#min-date').val());
+				formData.append('maxDateStr',$('#max-date').val());
+				formData.append('driverConditionStr',JSON.stringify(driverCondition));
+				$.ajax({
+					url:("/wds/driveradmin/searchdriverlist"),
+					type:'POST',
+					data:formData,
+					contentType:false,
+					processData:false,
+					cache:false,
+					success:function(data){
+						if(data.success){
+							handleList(data.driverList);
+						}else{
+							$.toast('search fail'+data.errMsg);
+						}
+					}
+				});
+			});
 	
 	function handleModifyCustomer(data)
 	{

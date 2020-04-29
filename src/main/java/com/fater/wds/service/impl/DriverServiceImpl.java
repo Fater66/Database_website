@@ -1,5 +1,6 @@
 package com.fater.wds.service.impl;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,4 +89,17 @@ public class DriverServiceImpl implements DriverService {
 		}
 	}
 
+	@Override
+	public DriverExecution getDriverList(Driver driverCondition, Date minDate, Date maxDate) {
+		List<Driver> driverList=driverDao.queryDriverListByCondition(driverCondition, minDate, maxDate);
+		DriverExecution he = new DriverExecution();
+		if(driverList != null)
+		{
+			he.setDriverList(driverList);
+		}else
+		{
+			he.setState(DriverStateEnum.INNER_ERROR.getState());
+		}
+		return he;
+	}
 }

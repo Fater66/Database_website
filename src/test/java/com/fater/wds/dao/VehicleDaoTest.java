@@ -1,9 +1,7 @@
 package com.fater.wds.dao;
 
-import java.sql.Date;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

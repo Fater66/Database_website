@@ -10,9 +10,9 @@ $(function(){
 	var isEdit = driverId ? true : false;
 	// 注册driver的URL
 	var registerDriverUrl = '/wds/driveradmin/registerdriver';
-	// 编辑driver前需要获取店铺信息，这里为获取当前policy信息的URL
+	// 编辑driver前需要获取driver信息，这里为获取当前driver信息的URL
 	var driverInfoUrl = "/wds/driveradmin/getdriverbyid?driverId=" + driverId;
-	// 编辑policy信息的URL
+	// 编辑driver信息的URL
 	var editDriverUrl = '/wds/driveradmin/modifydriver';
 	
 	if(isEdit){
