@@ -20,4 +20,8 @@ public interface DriverDao {
 	Driver queryByDriverId(long driverId);
 
 	int updateDriver(Driver driver);
+	
+	List<Driver> queryAllDriver();
+	
+	int deleteDriver(long driverId);
 }

@@ -1,6 +1,8 @@
 package com.fater.wds.web.vehicleadmin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +35,58 @@ public class VehicleManagementController {
 	@Autowired
 	private DriverService driverService;
 
+	@RequestMapping(value = "/listvehicle",method = RequestMethod.GET)
+	//ResponseBody将返回对象自动转换成json
+	@ResponseBody
+	private Map<String,Object> listVehicle()
+	{
+		Map<String,Object> modelMap = new HashMap<String, Object>();
+		List<Vehicle> vehicleList = new ArrayList<Vehicle>();
+		try {
+			vehicleList = vehicleService.getAllVehicleList();
+			modelMap.put("vehicleList",vehicleList);
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.toString());
+		}
+		return modelMap;
+	}
+	
+	@RequestMapping(value = "/deletevehicle",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> delelteVehicle(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		Long vehicleId = HttpServletRequestUtil.getLong(request, "vehicleId");
+		if(vehicleId > -1)
+		{
+			try {
+				VehicleExecution ce = vehicleService.deleteVehicle(vehicleId);
+				if(ce.getState() == VehicleStateEnum.SUCCESS.getState())
+				{
+					modelMap.put("success",true);
+				}
+				else
+				{
+					modelMap.put("success",false);
+					modelMap.put("errMsg",ce.getStateInfo());
+				}
+			} catch (Exception e) {
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.toString());
+			}
+		}
+		else
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg","empty vehicleId");
+		}
+		return modelMap;
+	}
+	
 	@RequestMapping(value = "/searchvehiclelist",method = RequestMethod.POST)
 	@ResponseBody
 	private Map<String,Object> searchVehicleList(HttpServletRequest request)

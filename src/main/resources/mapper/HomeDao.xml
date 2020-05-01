@@ -139,4 +139,25 @@
 		</set>
 		where home_id=#{homeId};
 	</update>
+	
+	<delete id="deleteHome" parameterType = "Long">
+	delete from home
+	where home_id = #{homeId}
+	</delete>
+	
+	<select id="queryAllHome" resultMap="homeMap">
+		SELECT
+		h.home_id,
+		h.home_purchase_date,
+		h.home_purchase_value,
+		h.home_area,
+		h.home_type,
+		h.auto_fire_notification,
+		h.home_security_system,
+		h.swimming_pool,
+		h.basement
+		from 
+			home h
+	</select>
+	
 </mapper>

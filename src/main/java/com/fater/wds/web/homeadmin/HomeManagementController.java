@@ -1,7 +1,9 @@
 package com.fater.wds.web.homeadmin;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fater.wds.dto.HomeExecution;
 import com.fater.wds.entity.Account;
+import com.fater.wds.entity.Administrater;
 import com.fater.wds.entity.Customer;
 import com.fater.wds.entity.Home;
 import com.fater.wds.enums.HomeStateEnum;
@@ -28,6 +31,58 @@ public class HomeManagementController {
 
 	@Autowired
 	private HomeService homeService;
+	
+	@RequestMapping(value = "/listhome",method = RequestMethod.GET)
+	//ResponseBody将返回对象自动转换成json
+	@ResponseBody
+	private Map<String,Object> listHome()
+	{
+		Map<String,Object> modelMap = new HashMap<String, Object>();
+		List<Home> homeList = new ArrayList<Home>();
+		try {
+			homeList = homeService.getAllHomeList();
+			modelMap.put("homeList",homeList);
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.toString());
+		}
+		return modelMap;
+	}
+	
+	@RequestMapping(value = "/deletehome",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> delelteHome(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		Long homeId = HttpServletRequestUtil.getLong(request, "homeId");
+		if(homeId > -1)
+		{
+			try {
+				HomeExecution ce = homeService.deleteHome(homeId);
+				if(ce.getState() == HomeStateEnum.SUCCESS.getState())
+				{
+					modelMap.put("success",true);
+				}
+				else
+				{
+					modelMap.put("success",false);
+					modelMap.put("errMsg",ce.getStateInfo());
+				}
+			} catch (Exception e) {
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.toString());
+			}
+		}
+		else
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg","empty homeId");
+		}
+		return modelMap;
+	}
 	
 	@RequestMapping(value = "/gethomelistbypolicyid",method = RequestMethod.GET)
 	@ResponseBody
@@ -95,20 +150,25 @@ public class HomeManagementController {
 	{
 		Map<String,Object> modelMap = new HashMap<>();
 		
+		Administrater administrater = (Administrater)request.getSession().getAttribute("administrater");
 		Account account = (Account)request.getSession().getAttribute("account");
-		if(account == null)
+		if(administrater == null)
 		{
-			modelMap.put("success", false);
-			modelMap.put("errMsg","need to log in");
-			return modelMap;
+			
+			if(account == null )
+			{
+				modelMap.put("success", false);
+				modelMap.put("errMsg","need to log in");
+				return modelMap;
+			}
+			if(account.getCustomer() == null)
+			{
+				modelMap.put("success", false);
+				modelMap.put("errMsg","need to create customer information");
+				return modelMap;
+			}
 		}
-		if(account.getCustomer() == null)
-		{
-			modelMap.put("success", false);
-			modelMap.put("errMsg","need to create customer information");
-			return modelMap;
-		}
-		Customer customer = account.getCustomer();
+		Customer customer = (account != null)? account.getCustomer():null;
 		
 		try {
 			String homeConditionStr = HttpServletRequestUtil.getString(request, "homeConditionStr");
@@ -152,7 +212,7 @@ public class HomeManagementController {
 				modelMap.put("errMsg",e.getMessage());
 				return modelMap;
 			}
-			homeCondition.setCustomerId(customer.getCustomerId());
+			if(administrater == null) homeCondition.setCustomerId(customer.getCustomerId());
 			
 			HomeExecution he = homeService.getHomeList(homeCondition, minDate, maxDate, minValue, maxValue, minArea, maxArea);
 			modelMap.put("homeList",he.getHomeList());

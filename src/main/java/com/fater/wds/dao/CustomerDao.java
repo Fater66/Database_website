@@ -2,6 +2,8 @@ package com.fater.wds.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.fater.wds.entity.Customer;
 
 public interface CustomerDao {
@@ -11,6 +13,7 @@ public interface CustomerDao {
 	 */
 	List<Customer> queryCustomer();
 	
+	List<Customer> queryCustomerList(@Param("customerCondition") Customer customerCondition);
 	/**
 	 * 
 	 */

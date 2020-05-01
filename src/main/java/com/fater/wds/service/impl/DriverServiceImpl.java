@@ -102,4 +102,30 @@ public class DriverServiceImpl implements DriverService {
 		}
 		return he;
 	}
+	
+	@Override
+	public DriverExecution deleteDriver(long driverId) {
+		try {
+			int effectedNum = driverDao.deleteDriver(driverId);
+			if(effectedNum <=0)
+			{
+				return new DriverExecution(DriverStateEnum.INNER_ERROR);
+			}
+			else
+			{
+				return new DriverExecution(DriverStateEnum.SUCCESS);
+			}
+		}catch(Exception e)
+		{
+			throw new DriverOperationException("Delete driver error" + e.getMessage());
+		}
+
+	}
+
+	@Override
+	public List<Driver> getAllDriverList()
+	{
+		return driverDao.queryAllDriver();
+	}
+	
 }

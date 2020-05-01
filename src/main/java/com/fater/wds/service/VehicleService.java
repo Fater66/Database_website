@@ -1,5 +1,7 @@
 package com.fater.wds.service;
 
+import java.util.List;
+
 import com.fater.wds.dto.VehicleExecution;
 import com.fater.wds.entity.Vehicle;
 
@@ -17,4 +19,7 @@ public interface VehicleService {
 	
 	public VehicleExecution getVehicleList(Vehicle vehicleCondition);
 
+	public List<Vehicle> getAllVehicleList();
+	
+	public VehicleExecution deleteVehicle(long vehicleId);
 }

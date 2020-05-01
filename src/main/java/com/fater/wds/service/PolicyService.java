@@ -22,4 +22,6 @@ public interface PolicyService {
 	public Policy getByPolicyId(long policyId);
 	
 	public List<Policy> getAllPolicyList();
+	
+	public PolicyExecution deletePolicy(long policyId);
 }

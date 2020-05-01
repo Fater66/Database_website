@@ -164,4 +164,9 @@
 			p.customer_id=c.customer_id
 		</where>
 	</select>
+	
+	<delete id="deletePolicy" parameterType = "Long">
+	delete from policy
+	where policy_id = #{policyId}
+	</delete>
 </mapper>

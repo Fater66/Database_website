@@ -103,4 +103,20 @@
 		</set>
 		where driver_id=#{driverId};
 	</update>
+	
+	<delete id="deleteDriver" parameterType = "Long">
+	delete from driver
+	where driver_id = #{driverId}
+	</delete>
+	
+	<select id="queryAllDriver" resultMap="driverMap">
+		select
+		d.driver_id,
+		d.driver_license_id,
+		d.driver_last_name,
+		d.driver_first_name,
+		d.driver_birth_date,
+		d.vehicle_id
+		from driver d
+	</select>
 </mapper>

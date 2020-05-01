@@ -19,4 +19,8 @@ public interface VehicleDao {
 	Vehicle queryByVehicleId(long vehicleId);
 	
 	int updateVehicle(Vehicle vehicle);	
+	
+	List<Vehicle> queryAllVehicle();
+	
+	int deleteVehicle(long vehicleId);
 }

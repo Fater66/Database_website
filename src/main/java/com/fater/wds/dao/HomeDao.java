@@ -15,10 +15,15 @@ public interface HomeDao {
 	
 	List<Home> queryHomeListByPolicyId(long policyId);
 	
-	List<Home> queryHomeListByCondition(@Param("homeCondition") Home homeCondition,@Param("minDate")Date minDate,@Param("maxDate")Date maxDate,
-			@Param("minValue")Float minValue,@Param("maxValue")Float maxValue,@Param("minArea")Float minArea,@Param("maxArea")Float maxArea);
 	
 	Home queryByHomeId(long homeId);
 	
 	int updateHome(Home home);
+	
+	List<Home> queryHomeListByCondition(@Param("homeCondition") Home homeCondition,@Param("minDate")Date minDate,@Param("maxDate")Date maxDate,
+			@Param("minValue")Float minValue,@Param("maxValue")Float maxValue,@Param("minArea")Float minArea,@Param("maxArea")Float maxArea);
+	
+	int deleteHome(long homeId);
+	
+	List<Home> queryAllHome();
 }

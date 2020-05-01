@@ -220,6 +220,38 @@ public class PolicyManagementController {
 		return modelMap;
 	}
 	
+	@RequestMapping(value = "/deletepolicy",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> deleltePolicy(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		Long policyId = HttpServletRequestUtil.getLong(request, "policyId");
+		if(policyId > -1)
+		{
+			try {
+				PolicyExecution ce = policyService.deletePolicy(policyId);
+				if(ce.getState() == PolicyStateEnum.SUCCESS.getState())
+				{
+					modelMap.put("success",true);
+				}
+				else
+				{
+					modelMap.put("success",false);
+					modelMap.put("errMsg",ce.getStateInfo());
+				}
+			} catch (Exception e) {
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.toString());
+			}
+		}
+		else
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg","empty policyId");
+		}
+		return modelMap;
+	}
+	
 	@RequestMapping(value = "/registerpolicy",method = RequestMethod.POST)
 	@ResponseBody
 	@Transactional

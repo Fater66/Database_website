@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fater.wds.dao.PolicyDao;
 import com.fater.wds.dto.PolicyExecution;
-import com.fater.wds.entity.Customer;
 import com.fater.wds.entity.Policy;
 import com.fater.wds.enums.PolicyStateEnum;
 import com.fater.wds.exceptions.PolicyOperationException;
@@ -48,6 +47,24 @@ public class PolicyServiceImpl implements PolicyService{
 		return policyDao.queryAllPolicy();
 	}
 	
+	@Override
+	public PolicyExecution deletePolicy(long policyId) {
+		try {
+			int effectedNum = policyDao.deletePolicy(policyId);
+			if(effectedNum <=0)
+			{
+				return new PolicyExecution(PolicyStateEnum.INNER_ERROR);
+			}
+			else
+			{
+				return new PolicyExecution(PolicyStateEnum.SUCCESS);
+			}
+		}catch(Exception e)
+		{
+			throw new PolicyOperationException("Delete policy error" + e.getMessage());
+		}
+
+	}
 	@Override
 	public PolicyExecution getPolicyList(Policy policyCondition) {
 		List<Policy> policyList=policyDao.queryPolicyList(policyCondition);

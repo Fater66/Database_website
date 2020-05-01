@@ -101,4 +101,29 @@ public class VehicleServiceImpl implements VehicleService {
 		}
 		return he;
 	}
+	
+	@Override
+	public VehicleExecution deleteVehicle(long vehicleId) {
+		try {
+			int effectedNum = vehicleDao.deleteVehicle(vehicleId);
+			if(effectedNum <=0)
+			{
+				return new VehicleExecution(VehicleStateEnum.INNER_ERROR);
+			}
+			else
+			{
+				return new VehicleExecution(VehicleStateEnum.SUCCESS);
+			}
+		}catch(Exception e)
+		{
+			throw new VehicleOperationException("Delete vehicle error" + e.getMessage());
+		}
+
+	}
+
+	@Override
+	public List<Vehicle> getAllVehicleList()
+	{
+		return vehicleDao.queryAllVehicle();
+	}
 }

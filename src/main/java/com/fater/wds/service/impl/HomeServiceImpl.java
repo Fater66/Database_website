@@ -117,4 +117,28 @@ public class HomeServiceImpl implements HomeService{
 		return he;
 	}
 
+	@Override
+	public HomeExecution deleteHome(long homeId) {
+		try {
+			int effectedNum = homeDao.deleteHome(homeId);
+			if(effectedNum <=0)
+			{
+				return new HomeExecution(HomeStateEnum.INNER_ERROR);
+			}
+			else
+			{
+				return new HomeExecution(HomeStateEnum.SUCCESS);
+			}
+		}catch(Exception e)
+		{
+			throw new HomeOperationException("Delete home error" + e.getMessage());
+		}
+
+	}
+
+	@Override
+	public List<Home> getAllHomeList()
+	{
+		return homeDao.queryAllHome();
+	}
 }

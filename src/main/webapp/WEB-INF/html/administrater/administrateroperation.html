@@ -49,6 +49,13 @@ function changeSearchBlock()
 			+'Marital Status<select id = "customer-marital-status-search" ><option>S</option><option>M</option><option>W</option>'
 			+'</div>'
 	}
+	else if(obj.value == 'Home')
+	{
+		html += '<div class="col-10">Purchase Date from<input id="min-date-home-search" type="date"> to <input id="max-date-home-search" type="date">'
+			+'<div class="col-10">Purchase Value from <input id="min-value-home-search" type="text"> to <input id="max-value-home-search" type="text">'
+            +'<div class="col-10">Area from <input id="min-area-home-search" type="text"> to <input id="max-area-home-search" type="text">' 
+            +'<div class="col-10">Home Type<input id="home-type-search" type="text">'
+	}
 	$('.search-block').html(html);
 }
 	
@@ -58,6 +65,49 @@ function deleteCustomer(id)
 	formData.append("customerId",id);
 	$.ajax({
 		url:'/wds/customeradmin/deletecustomer',
+		type:'POST',
+		data:formData,
+		contentType:false,
+		processData:false,
+		cache:false,
+		success:function(data){
+			if(data.success){
+				$.toast('delete success');
+				window.location.reload();
+			}else{
+				$.toast('delete fail'+data.errMsg);
+			}
+		}
+	});
+}
+
+function deletePolicy(id)
+{
+	var formData = new FormData();
+	formData.append("policyId",id);
+	$.ajax({
+		url:'/wds/policyadmin/deletepolicy',
+		type:'POST',
+		data:formData,
+		contentType:false,
+		processData:false,
+		cache:false,
+		success:function(data){
+			if(data.success){
+				$.toast('delete success');
+				window.location.reload();
+			}else{
+				$.toast('delete fail'+data.errMsg);
+			}
+		}
+	});
+}
+function deleteHome(id)
+{
+	var formData = new FormData();
+	formData.append("homeId",id);
+	$.ajax({
+		url:'/wds/homeadmin/deletehome',
 		type:'POST',
 		data:formData,
 		contentType:false,

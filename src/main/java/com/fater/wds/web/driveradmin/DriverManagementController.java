@@ -1,7 +1,9 @@
 package com.fater.wds.web.driveradmin;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fater.wds.dto.DriverExecution;
-import com.fater.wds.dto.HomeExecution;
 import com.fater.wds.entity.Account;
 import com.fater.wds.entity.Customer;
 import com.fater.wds.entity.Driver;
-import com.fater.wds.entity.Home;
 import com.fater.wds.enums.DriverStateEnum;
 import com.fater.wds.service.DriverService;
 import com.fater.wds.util.HttpServletRequestUtil;
@@ -30,6 +30,58 @@ public class DriverManagementController {
 	@Autowired
 	private DriverService driverService;
 
+	@RequestMapping(value = "/listdriver",method = RequestMethod.GET)
+	//ResponseBody将返回对象自动转换成json
+	@ResponseBody
+	private Map<String,Object> listDriver()
+	{
+		Map<String,Object> modelMap = new HashMap<String, Object>();
+		List<Driver> driverList = new ArrayList<Driver>();
+		try {
+			driverList = driverService.getAllDriverList();
+			modelMap.put("driverList",driverList);
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.toString());
+		}
+		return modelMap;
+	}
+	
+	@RequestMapping(value = "/deletedriver",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> delelteDriver(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		Long driverId = HttpServletRequestUtil.getLong(request, "driverId");
+		if(driverId > -1)
+		{
+			try {
+				DriverExecution ce = driverService.deleteDriver(driverId);
+				if(ce.getState() == DriverStateEnum.SUCCESS.getState())
+				{
+					modelMap.put("success",true);
+				}
+				else
+				{
+					modelMap.put("success",false);
+					modelMap.put("errMsg",ce.getStateInfo());
+				}
+			} catch (Exception e) {
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.toString());
+			}
+		}
+		else
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg","empty driverId");
+		}
+		return modelMap;
+	}
+	
 	@RequestMapping(value = "/getdriverlistbyvehicleid",method = RequestMethod.GET)
 	@ResponseBody
 	private Map<String,Object> getDriverListByVehicleId(HttpServletRequest request)

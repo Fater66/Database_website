@@ -90,4 +90,18 @@
 		</set>
 		where vehicle_id=#{vehicleId};
 	</update>
+	
+	<delete id="deleteVehicle" parameterType = "Long">
+	delete from vehicle
+	where vehicle_id = #{vehicleId}
+	</delete>
+	
+	<select id="queryAllVehicle" resultMap="vehicleMap">
+		select
+		v.vehicle_id,
+		v.vehicle_vin,
+		v.vehicle_mmy,
+		v.vehicle_status
+		from vehicle v
+	</select>
 </mapper>
