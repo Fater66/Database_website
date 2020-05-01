@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fater.wds.dto.DriverExecution;
 import com.fater.wds.dto.VehicleExecution;
 import com.fater.wds.entity.Account;
+import com.fater.wds.entity.Administrater;
 import com.fater.wds.entity.Customer;
 import com.fater.wds.entity.Driver;
 import com.fater.wds.entity.Vehicle;
@@ -93,20 +94,25 @@ public class VehicleManagementController {
 	{
 		Map<String,Object> modelMap = new HashMap<>();
 		
+		Administrater administrater = (Administrater)request.getSession().getAttribute("administrater");
 		Account account = (Account)request.getSession().getAttribute("account");
-		if(account == null)
+		if(administrater == null)
 		{
-			modelMap.put("success", false);
-			modelMap.put("errMsg","need to log in");
-			return modelMap;
+			
+			if(account == null )
+			{
+				modelMap.put("success", false);
+				modelMap.put("errMsg","need to log in");
+				return modelMap;
+			}
+			if(account.getCustomer() == null)
+			{
+				modelMap.put("success", false);
+				modelMap.put("errMsg","need to create customer information");
+				return modelMap;
+			}
 		}
-		if(account.getCustomer() == null)
-		{
-			modelMap.put("success", false);
-			modelMap.put("errMsg","need to create customer information");
-			return modelMap;
-		}
-		Customer customer = account.getCustomer();
+		Customer customer = (account != null)? account.getCustomer():null;
 		
 		try {
 			String vehicleConditionStr = HttpServletRequestUtil.getString(request, "vehicleConditionStr");
@@ -120,7 +126,7 @@ public class VehicleManagementController {
 				modelMap.put("errMsg",e.getMessage());
 				return modelMap;
 			}
-			vehicleCondition.setCustomerId(customer.getCustomerId());
+			if(administrater == null)  vehicleCondition.setCustomerId(customer.getCustomerId());
 			
 			VehicleExecution ve = vehicleService.getVehicleList(vehicleCondition);
 			modelMap.put("vehicleList",ve.getVehicleList());

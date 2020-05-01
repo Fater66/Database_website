@@ -47,14 +47,27 @@ function changeSearchBlock()
 			+'Last Name<input id="customer-last-name-search" type="text"></div><div class="col-10">'
 			+'First Name<input id="customer-first-name-search" type="text"> '
 			+'Marital Status<select id = "customer-marital-status-search" ><option>S</option><option>M</option><option>W</option>'
-			+'</div>'
+			+'</div>';
 	}
 	else if(obj.value == 'Home')
 	{
 		html += '<div class="col-10">Purchase Date from<input id="min-date-home-search" type="date"> to <input id="max-date-home-search" type="date">'
 			+'<div class="col-10">Purchase Value from <input id="min-value-home-search" type="text"> to <input id="max-value-home-search" type="text">'
             +'<div class="col-10">Area from <input id="min-area-home-search" type="text"> to <input id="max-area-home-search" type="text">' 
-            +'<div class="col-10">Home Type<input id="home-type-search" type="text">'
+            +'<div class="col-10">Home Type<input id="home-type-search" type="text">';
+	}
+	else if(obj.value == 'Driver')
+	{
+		html += '<div class="col-10">Driver License id<input id="driver-license-id-search" type="text">'
+                +'<div class="col-10">Driver Last Name <input id="driver-last-name-search" type="text">'
+                +'<div class="col-10">Driver First Name <input id="driver-first-name" type="text">'
+                +'<div class="col-10">Birth Date from<input id="min-date-driver-search" type="date"> to <input id="max-date-driver-search" type="date">';
+	}
+	else if(obj.value == 'Vehicle')
+	{
+		html +='<div class="col-25">Vehicle Vin<input id="vehicle-vin-search" type="text"></div>'
+                +'<div class="col-10">Vehicle MMY<input id="vehicle-mmy-search" type="text"></div>'
+                +'<div class="col-10">Vehicle Status<select id = "vehicle-status-search" ><option > O </option><option > F </option></select></div>';
 	}
 	$('.search-block').html(html);
 }
@@ -108,6 +121,48 @@ function deleteHome(id)
 	formData.append("homeId",id);
 	$.ajax({
 		url:'/wds/homeadmin/deletehome',
+		type:'POST',
+		data:formData,
+		contentType:false,
+		processData:false,
+		cache:false,
+		success:function(data){
+			if(data.success){
+				$.toast('delete success');
+				window.location.reload();
+			}else{
+				$.toast('delete fail'+data.errMsg);
+			}
+		}
+	});
+}
+function deleteVehicle(id)
+{
+	var formData = new FormData();
+	formData.append("vehicleId",id);
+	$.ajax({
+		url:'/wds/vehicleadmin/deletevehicle',
+		type:'POST',
+		data:formData,
+		contentType:false,
+		processData:false,
+		cache:false,
+		success:function(data){
+			if(data.success){
+				$.toast('delete success');
+				window.location.reload();
+			}else{
+				$.toast('delete fail'+data.errMsg);
+			}
+		}
+	});
+}
+function deleteDriver(id)
+{
+	var formData = new FormData();
+	formData.append("driverId",id);
+	$.ajax({
+		url:'/wds/driveradmin/deletedriver',
 		type:'POST',
 		data:formData,
 		contentType:false,
