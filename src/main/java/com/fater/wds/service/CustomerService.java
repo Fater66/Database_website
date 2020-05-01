@@ -15,4 +15,6 @@ public interface CustomerService {
 	public CustomerExecution modifyCustomer(Customer customer);
 	
 	public CustomerExecution deleteCustomer(long customerId);
+	
+	public CustomerExecution getCustomerListByCondition(Customer customerCondition);
 }

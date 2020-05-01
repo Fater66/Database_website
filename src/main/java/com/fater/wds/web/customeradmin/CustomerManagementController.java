@@ -47,6 +47,34 @@ public class CustomerManagementController {
 		return modelMap;
 	}
 	
+	@RequestMapping(value = "/searchcustomerlist",method = RequestMethod.POST)
+	@ResponseBody
+	private Map<String,Object> searchCustomerList(HttpServletRequest request)
+	{
+		Map<String,Object> modelMap = new HashMap<>();
+		
+		try {
+			String customerConditionStr = HttpServletRequestUtil.getString(request, "customerConditionStr");
+			Customer customerCondition = null;
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				customerCondition = mapper.readValue(customerConditionStr, Customer.class);
+			}catch(Exception e)
+			{
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.getMessage());
+				return modelMap;
+			}
+			CustomerExecution pe = customerService.getCustomerListByCondition(customerCondition);
+			modelMap.put("customerList",pe.getCustomerList());
+			modelMap.put("success",true);
+		}catch(Exception e)
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.getMessage());
+		}
+		return modelMap;
+	}
 	@RequestMapping(value = "/getcustomerbyid",method=RequestMethod.GET)
 	@ResponseBody
 	public Map<String,Object> getCustomerById(HttpServletRequest request)

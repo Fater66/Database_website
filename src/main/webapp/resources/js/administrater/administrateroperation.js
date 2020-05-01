@@ -18,7 +18,38 @@ $(function(){
 					searchVehicleByCondition();
 				else if(searchObj.value == "Driver")
 					searchDriverByCondition();
+				else if(searchObj.value == "Customer")
+					searchCustomerByCondition();
 			});
+	
+	function searchCustomerByCondition()
+	{
+		var customerCondition = {};
+		customerCondition.customerGender = $('#customer-gender-search').val();
+		customerCondition.customerLastName = $('#customer-last-name-search').val();
+		customerCondition.customerFirstName = $('#customer-first-name-search').val();
+		customerCondition.customerMaritalStatus = $('#customer-marital-status-search').val();
+		var formData = new FormData();
+
+		formData.append('customerConditionStr',JSON.stringify(customerCondition));
+		
+		$.ajax({
+			url:("/wds/customeradmin/searchcustomerlist"),
+			type:'POST',
+			data:formData,
+			contentType:false,
+			processData:false,
+			cache:false,
+			success:function(data){
+				if(data.success){
+					handlecustomerTitle();
+					handlecustomerList(data.customerList);
+				}else{
+					$.toast('search fail'+data.errMsg);
+				}
+			}
+		});
+	}
 	
 	function searchHomeByCondition()
 	{

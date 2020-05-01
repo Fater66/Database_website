@@ -94,4 +94,18 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 
 	}
+	
+	@Override
+	public CustomerExecution getCustomerListByCondition(Customer customerCondition) {
+		List<Customer> customerList=customerDao.queryCustomerListByCondition(customerCondition);
+		CustomerExecution pe = new CustomerExecution();
+		if(customerList != null)
+		{
+			pe.setCustomerList(customerList);
+		}else
+		{
+			pe.setState(CustomerStateEnum.INNER_ERROR.getState());
+		}
+		return pe;
+	}
 }

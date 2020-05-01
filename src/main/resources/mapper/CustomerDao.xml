@@ -3,7 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fater.wds.dao.CustomerDao">
-		<!-- <resultMap type="com.fater.wds.entity.Customer"
+	<resultMap type="com.fater.wds.entity.Customer"
 		id="customerMap">
 		<id column="customer_id" property="customerId" />
 		<result column="customer_last_name" property="customerLastName" />
@@ -14,7 +14,7 @@
 		<result column="customer_zipcode" property="customerZipcode" />
 		<result column="customer_gender" property="customerGender" />
 		<result column="customer_marital_status" property="customerMaritalStatus" />
-	</resultMap> -->
+	</resultMap>
 	
 	<select id="queryCustomer" resultType="com.fater.wds.entity.Customer">
 		SELECT customer_id,customer_last_name, customer_first_name,customer_street_address,customer_city,
@@ -69,5 +69,29 @@
 	delete from customer
 	where customer_id = #{customerId}
 	</delete>
+	
+	<select id="queryCustomerListByCondition" resultMap="customerMap">
+		SELECT
+		customer_last_name,customer_first_name,customer_street_address,customer_city,customer_state,customer_zipcode,
+		customer_gender,customer_marital_status
+		FROM
+		customer c
+		<where>
+			<if test="customerCondition.customerGender!=null">
+				and c.customer_gender = #{customerCondition.customerGender}
+			</if>
+			<if test="customerCondition.customerLastName!=null and customerCondition.customerLastName!=''">
+				and c.customer_last_name REGEXP #{customerCondition.customerLastName}
+			</if>
+			<if test="customerCondition.customerFirstName!=null and customerCondition.customerFirstName!=''">
+				and c.customer_first_name REGEXP #{customerCondition.customerFirstName}
+			</if>
+			<if test="customerCondition.customerMaritalStatus!=null">
+				and c.customer_marital_status = #{customerCondition.customerMaritalStatus}
+			</if>
+		</where>
+		ORDER BY
+		c.customer_id;
+	</select>
 	
 </mapper>

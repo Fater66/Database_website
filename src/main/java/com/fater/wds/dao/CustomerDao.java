@@ -13,7 +13,7 @@ public interface CustomerDao {
 	 */
 	List<Customer> queryCustomer();
 	
-	List<Customer> queryCustomerList(@Param("customerCondition") Customer customerCondition);
+	List<Customer> queryCustomerListByCondition(@Param("customerCondition") Customer customerCondition);
 	/**
 	 * 
 	 */
